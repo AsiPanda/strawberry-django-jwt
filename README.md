@@ -1,5 +1,6 @@
 # Strawberry Django JWT
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/849d05c916cb4ed3a8851ee211b2b79c)](https://app.codacy.com/gh/KundaPanda/strawberry-django-jwt?utm_source=github.com&utm_medium=referral&utm_content=KundaPanda/strawberry-django-jwt&utm_campaign=Badge_Grade_Settings)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/strawberry-django-jwt?style=for-the-badge)](https://pypi.org/project/strawberry-django-jwt/)
 
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/KundaPanda/strawberry-django-jwt?style=for-the-badge)](https://github.com/KundaPanda/strawberry-django-jwt/graphs/commit-activity)
