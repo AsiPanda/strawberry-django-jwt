@@ -2,6 +2,7 @@ from calendar import timegm
 from datetime import datetime
 from inspect import isawaitable
 from typing import Any
+from typing import cast
 from typing import Union
 
 import jwt
@@ -9,6 +10,7 @@ from asgiref.sync import sync_to_async
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest
 from django.utils.translation import gettext as _
+from packaging import version
 from strawberry.django.context import StrawberryDjangoContext
 
 from . import exceptions
@@ -42,11 +44,15 @@ def jwt_payload(user, context=None):
 
 
 def jwt_encode(payload: object_types.TokenPayloadType, context=None) -> str:
-    return jwt.encode(
+    token = jwt.encode(
         payload.__dict__,
         jwt_settings.JWT_PRIVATE_KEY or jwt_settings.JWT_SECRET_KEY,
         jwt_settings.JWT_ALGORITHM,
     )
+    _token = cast(str, token)
+    if version.parse(jwt.__version__) < version.parse("2.0.0"):  # type: ignore
+        _token = cast(bytes, _token).decode("utf8")
+    return _token
 
 
 def jwt_decode(token: str, context=None) -> object_types.TokenPayloadType:

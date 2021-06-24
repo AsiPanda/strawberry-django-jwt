@@ -22,22 +22,24 @@ exclude = ["tests/"]
 [tool.poetry.dependencies]
 python = "^3.7"
 Django = "^3.0"
-PyJWT = "^2.1.0"
-strawberry-graphql = "^0.67.1"
+PyJWT = "^1.5"
+strawberry-graphql = "^0.64.4"
 strawberry-graphql-django = "^0.2.2"
 django-admin-display = "^1.3.0"
 
 [tool.poetry.dev-dependencies]
-cryptography = "^3.4.7"
-coverage = "^5.5"
-pytest = "^6.2.4"
-pytest-cov = "^2.12.1"
+cryptography = "^3.0"
+coverage = "^5.0"
+pytest = "^6.0"
+pytest-cov = "^2.0"
 pytest-django = "^4.0.0"
 nox = "^2021.6.12"
 types-cryptography = "^3.3.3"
 django-stubs = "^1.8.0"
 django-mock-queries = "^2.1.6"
 types-mock = "^0.1.3"
+types-jwt = "^0.1.3"
+types-pkg-resources = "^0.1.3"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

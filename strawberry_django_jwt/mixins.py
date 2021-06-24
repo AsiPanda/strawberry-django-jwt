@@ -4,8 +4,10 @@ from typing import Dict
 from typing import Optional
 from typing import TYPE_CHECKING
 
+import jwt
 import strawberry
 from django.utils.translation import gettext as _
+from packaging import version
 from strawberry.arguments import StrawberryArgument
 from strawberry.field import StrawberryField
 

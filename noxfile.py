@@ -45,7 +45,7 @@ def activate_virtualenv_in_precommit_hooks(session_: Session) -> None:
         bindir = repr(session_.bin)[1:-1]  # strip quotes
         if not (
                 Path("A") == Path("a") and bindir.lower(
-                ) in text.lower() or bindir in text
+        ) in text.lower() or bindir in text
         ):
             continue
 
@@ -100,7 +100,8 @@ def safety(session_: Session) -> None:
 def mypy(session_: Session) -> None:
     """Type-check using mypy."""
     args = session_.posargs or ["strawberry_django_jwt", "tests"]
-    deps = [".", "mypy", "pytest", "django-stubs", "types-cryptography", "types-mock"]
+    deps = [".", "mypy", "pytest", "django-stubs", "types-cryptography", "types-mock", "types-pkg_resources",
+            "types-jwt"]
     session_.install(*deps)
     session_.run("mypy", *args)
     if not session_.posargs:
