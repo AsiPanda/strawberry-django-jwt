@@ -147,7 +147,7 @@ class LoginLogoutTest(SchemaTestCase):
 
         @login_field
         def mutate(self, info: Info) -> str:
-            return "OK"
+            return "OK" if self == {} else "NOK"
 
     def test_login_logout(self):
         self.client.schema(query=self.Query, mutation=self.Mutation)

@@ -95,10 +95,6 @@ if django.VERSION[:2] >= (3, 1):
         def _setup_middleware(self):
             self._schema.middleware = [m() for m in self._middleware]
 
-        def execute(self, query, **options):
-            self._setup_middleware()
-            return self._schema.execute(query, validate_queries=False, **options)
-
 
     class AsyncJSONWebTokenClient(AsyncSchemaRequestFactory, AsyncClient):
 
@@ -122,18 +118,6 @@ if django.VERSION[:2] >= (3, 1):
 
         def credentials(self, **kwargs):
             self._credentials = kwargs
-
-        def execute(self, query, variables=None, **extra):
-            if django.VERSION[:2] == (3, 1):
-                context = self.post(query, custom_headers=self._credentials, **extra)
-            else:
-                context = self.post(query, **self._credentials, **extra)
-
-            return super().execute(
-                query,
-                context_value=context,
-                variable_values=variables,
-            )
 
         def authenticate(self, user):
             self._credentials = {
