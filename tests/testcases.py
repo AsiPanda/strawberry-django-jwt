@@ -111,7 +111,7 @@ if django.VERSION[:2] >= (3, 1):
     from strawberry_django_jwt.testcases import AsyncJSONWebTokenTestCase
 
 
-    class AsyncUserTestCase(testcases.TransactionTestCase):
+    class AsyncUserTestCase(testcases.TransactionTestCase, ):
 
         def setUp(self):
             self.user = get_user_model().objects.create_user(
@@ -152,9 +152,9 @@ if django.VERSION[:2] >= (3, 1):
             super().setUp()
             self.client.schema(query=self.Query, mutation=self.Mutation)
 
-        def execute(self, variables=None):
+        async def execute(self, variables=None):
             assert self.query, ('`query` property not specified')
-            return self.client.execute(self.query, variables)
+            return await self.client.execute(self.query, variables)
 
         def assertUsernameIn(self, payload):
             username = payload[self.user.USERNAME_FIELD]

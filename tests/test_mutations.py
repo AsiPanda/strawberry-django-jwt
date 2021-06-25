@@ -6,6 +6,8 @@ from django_mock_queries.query import MockModel  # type: ignore
 from django_mock_queries.query import MockSet  # type: ignore
 from strawberry.django import auto
 from strawberry.django import mutations
+from strawberry.types import Info
+from strawberry_django_jwt.decorators import login_field
 from strawberry_django_jwt.decorators import login_required
 from strawberry_django_jwt.settings import jwt_settings
 
@@ -77,10 +79,12 @@ class CookieTokenAuthTests(mixins.CookieTokenAuthMixin, CookieTestCase):
         refreshExpiresIn
       }}
     }}'''
-
     @strawberry.type
     class Mutation:
         token_auth = strawberry_django_jwt.mutations.ObtainJSONWebToken.obtain
+
+    def test_token_auth(self):
+        return super(CookieTokenAuthTests, self).test_token_auth()
 
 
 class CookieRefreshTests(mixins.CookieRefreshMixin, CookieTestCase):
@@ -111,6 +115,79 @@ class DeleteCookieTests(mixins.DeleteCookieMixin, CookieTestCase):
     @strawberry.type
     class Mutation:
         delete_cookie = strawberry_django_jwt.mutations.DeleteJSONWebTokenCookie.delete_cookie
+
+
+class LoginLogoutTest(SchemaTestCase):
+    login_query = '''
+    mutation TokenAuth($username: String!, $password: String!) {
+      tokenAuth(username: $username, password: $password) {
+        token
+        payload {
+            username
+        }
+      }
+    }'''
+    verify_query = '''
+    mutation VerifyToken($token: String!) {
+      verifyToken(token: $token) {
+        payload {
+            username
+        }
+      }
+    }'''
+    mutate_query = '''
+    mutation Mutate {
+      mutate
+    }'''
+
+    @strawberry.type
+    class Mutation:
+        token_auth = strawberry_django_jwt.mutations.ObtainJSONWebToken.obtain
+        verify_token = strawberry_django_jwt.mutations.Verify.verify
+
+        @login_field
+        def mutate(self, info: Info) -> str:
+            return "OK"
+
+    def test_login_logout(self):
+        self.client.schema(query=self.Query, mutation=self.Mutation)
+        # Login
+        self.query = self.login_query
+        response = self.execute({
+            self.user.USERNAME_FIELD: self.user.get_username(),
+            'password': 'dolphins',
+        })
+
+        self.assertIsNone(response.errors)
+        self.assertEqual(response.data["tokenAuth"]["payload"]["username"], self.user.get_username())
+        token = response.data["tokenAuth"]["token"]
+
+        # Verify with headers
+
+        self.query = self.verify_query
+        self.client.authenticate(token)
+        response = self.execute({"token": token})
+
+        self.assertIsNone(response.errors)
+        self.assertEqual(response.data["verifyToken"]["payload"]["username"], self.user.get_username())
+
+        # Check login
+
+        self.query = self.mutate_query
+        self.client.authenticate(token)
+        response = self.execute()
+
+        self.assertIsNone(response.errors)
+        self.assertEqual(response.data["mutate"], "OK")
+
+        # Logout
+
+        self.query = self.mutate_query
+        self.client.logout()
+        response = self.execute()
+
+        self.assertIsNone(response.data)
+        self.assertEqual(len(response.errors), 1)
 
 
 @strawberry.django.type(MyTestModel)
@@ -155,12 +232,12 @@ class MutationFieldTests(SchemaTestCase):
             MockModel(test="test123")
         )
 
-        headers = {
+        self.client.credentials(**{
             jwt_settings.JWT_AUTH_HEADER_NAME:
                 f'{jwt_settings.JWT_AUTH_HEADER_PREFIX} {self.token}',
-        }
+        })
 
-        response = self.client.execute(self.query, **headers)
+        response = self.client.execute(self.query)
 
         data = response.data.get("testCreate")
 

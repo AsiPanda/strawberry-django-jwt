@@ -24,8 +24,11 @@ class SchemaRequestFactory(RequestFactory):
     def middleware(self, middleware):
         self._middleware = middleware
 
-    def execute(self, query, **options):
+    def _setup_middleware(self):
         self._schema.middleware = [m() for m in self._middleware]
+
+    def execute(self, query, **options):
+        self._setup_middleware()
         return self._schema.execute_sync(query, validate_queries=False, **options)
 
 
@@ -44,6 +47,7 @@ class JSONWebTokenClient(SchemaRequestFactory, Client):
         self._credentials = kwargs
 
     def execute(self, query, variables=None, **extra):
+        self._setup_middleware()
         extra.update(self._credentials)
         context = self.post('/', **extra)
 
@@ -53,10 +57,10 @@ class JSONWebTokenClient(SchemaRequestFactory, Client):
             variable_values=variables,
         )
 
-    def authenticate(self, user):
+    def authenticate(self, token):
         self._credentials = {
             jwt_settings.JWT_AUTH_HEADER_NAME:
-                f'{jwt_settings.JWT_AUTH_HEADER_PREFIX} {get_token(user)}',
+                f'{jwt_settings.JWT_AUTH_HEADER_PREFIX} {token}',
         }
 
     def logout(self):
@@ -88,8 +92,11 @@ if django.VERSION[:2] >= (3, 1):
         def middleware(self, middleware):
             self._middleware = middleware
 
-        def execute(self, query, **options):
+        def _setup_middleware(self):
             self._schema.middleware = [m() for m in self._middleware]
+
+        def execute(self, query, **options):
+            self._setup_middleware()
             return self._schema.execute(query, validate_queries=False, **options)
 
 
@@ -107,12 +114,8 @@ if django.VERSION[:2] >= (3, 1):
             for idx, header in enumerate(request["headers"]):
                 if header[0] == b"content-length":
                     del request["headers"][idx]
-            if '_body_file' in request:
-                body_file = request.pop('_body_file')
-                request["headers"].append((b"content-length", bytes(f"{len(body_file)}", "latin1")))
-            else:
-                body_file = FakePayload(' ')
-                request["headers"].append((b"content-length", b"1"))
+            body_file = request.pop('_body_file')
+            request["headers"].append((b"content-length", bytes(f"{len(body_file)}", "latin1")))
             request = ASGIRequest(self._base_environ(**request), body_file)
             request.user = AnonymousUser()
             return request
@@ -121,8 +124,10 @@ if django.VERSION[:2] >= (3, 1):
             self._credentials = kwargs
 
         def execute(self, query, variables=None, **extra):
-            extra.update(self._credentials)
-            context = self.post('/', **extra)
+            if django.VERSION[:2] == (3, 1):
+                context = self.post(query, custom_headers=self._credentials, **extra)
+            else:
+                context = self.post(query, **self._credentials, **extra)
 
             return super().execute(
                 query,
@@ -141,4 +146,4 @@ if django.VERSION[:2] >= (3, 1):
 
 
     class AsyncJSONWebTokenTestCase(testcases.TransactionTestCase):
-        client_class = JSONWebTokenClient
+        client_class = AsyncJSONWebTokenClient

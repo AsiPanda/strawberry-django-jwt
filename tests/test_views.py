@@ -22,6 +22,7 @@ class ViewClient(JSONWebTokenClient):
         return self.generic('POST', path, json.dumps(data), **kwargs)
 
     def execute(self, query, variables=None, **extra):
+        self._setup_middleware()
         data = {
             'query': query,
             'variables': variables,
@@ -52,7 +53,7 @@ class ViewsTests(SchemaTestCase):
         self.other_user = get_user_model().objects.create_user('other')
         self.other_token = get_token(self.other_user)
         self.client.schema(query=ViewsTests.Query, mutation=self.Mutation)
-        self.client._schema.middleware.append(JSONWebTokenMiddleware())
+        self.client.middleware([JSONWebTokenMiddleware])
 
     def test_login(self):
         query = """
@@ -100,6 +101,7 @@ if django.VERSION[:2] >= (3, 1):
             return self.generic('POST', path, json.dumps(data), **kwargs)
 
         async def execute(self, query, variables=None, **extra):
+            self._setup_middleware()
             data = {
                 'query': query,
                 'variables': variables,
@@ -130,7 +132,7 @@ if django.VERSION[:2] >= (3, 1):
             self.other_user = get_user_model().objects.create_user('other')
             self.other_token = get_token(self.other_user)
             self.client.schema(query=ViewsTests.Query, mutation=self.Mutation)
-            self.client._schema.middleware.append(AsyncJSONWebTokenMiddleware())
+            self.client.middleware([AsyncJSONWebTokenMiddleware])
 
         async def test_login_async(self):
             query = """
