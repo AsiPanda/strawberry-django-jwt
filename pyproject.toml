@@ -48,7 +48,7 @@ autopep8 = "^1.4"
 darglint = "^1.8.0"
 mypy = "^0.910"
 safety = "^1.5"
-pylint = "^2.9.3"
+pylint = "^2.9.4"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
