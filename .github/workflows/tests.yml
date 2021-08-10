@@ -130,7 +130,7 @@ jobs:
         run: |
           nox --force-color --session=coverage -- xml -i
       - name: Upload coverage report
-        uses: codecov/codecov-action@v1.5.2
+        uses: codecov/codecov-action@v2.0.2
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@v1
         if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
