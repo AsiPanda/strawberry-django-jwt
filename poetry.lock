@@ -1129,7 +1129,7 @@ types-cryptography = "*"
 
 [[package]]
 name = "types-mock"
-version = "0.1.5"
+version = "4.0.1"
 description = "Typing stubs for mock"
 category = "dev"
 optional = false
@@ -1215,7 +1215,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "e8eb211e04bcfa6c94e747bf78dda76bc9b3eb918813837ef322e393259a0773"
+content-hash = "7aaf6c5ce713ace854fa03ccf4b564aa41a7547263a48b1c9f4f9c89abba1817"
 
 [metadata.files]
 argcomplete = [
@@ -1850,8 +1850,8 @@ types-jwt = [
     {file = "types_jwt-0.1.3-py2.py3-none-any.whl", hash = "sha256:36a1d5f99b349428f9ca5695e5caf3378398ae31d7aaed1c668c81451ba79b08"},
 ]
 types-mock = [
-    {file = "types-mock-0.1.5.tar.gz", hash = "sha256:5a658d21068487af0eac0e207a51f9df8b03ba9dbfdb3a19d679fef3d49578a5"},
-    {file = "types_mock-0.1.5-py3-none-any.whl", hash = "sha256:117be0fcbcc8dddc49b966999e8126f67a7a83904627d5cf2d1c3fb4fb620527"},
+    {file = "types-mock-4.0.1.tar.gz", hash = "sha256:1ad09970f4f5ec45a138ab1e88d032f010e851bccef7765b34737ed390bbc5c8"},
+    {file = "types_mock-4.0.1-py3-none-any.whl", hash = "sha256:1a470543be8de673e2ea14739622de3bfb8c9b10429f50338ba9ca1e868c15e9"},
 ]
 types-pkg-resources = [
     {file = "types-pkg_resources-0.1.3.tar.gz", hash = "sha256:834a9b8d3dbea343562fd99d5d3359a726f6bf9d3733bccd2b4f3096fbab9dae"},
