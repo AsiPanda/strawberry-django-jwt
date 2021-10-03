@@ -1034,7 +1034,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "strawberry-graphql"
-version = "0.79.0"
+version = "0.80.2"
 description = "A library for creating GraphQL APIs"
 category = "main"
 optional = false
@@ -1238,7 +1238,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "6aec100c30fd4941e8845974a4aa93504cf8a825144d26215303d92a66472200"
+content-hash = "8cebfe84439cc45de73ab8e1a1bca7316cc3ffe09d96a4f5a758614978f778b3"
 
 [metadata.files]
 argcomplete = [
@@ -1425,6 +1425,8 @@ cryptography = [
     {file = "cryptography-3.4.8-cp36-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:34dae04a0dce5730d8eb7894eab617d8a70d0c97da76b905de9efb7128ad7085"},
     {file = "cryptography-3.4.8-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1eb7bb0df6f6f583dd8e054689def236255161ebbcf62b226454ab9ec663746b"},
     {file = "cryptography-3.4.8-cp36-abi3-manylinux_2_24_x86_64.whl", hash = "sha256:9965c46c674ba8cc572bc09a03f4c649292ee73e1b683adb1ce81e82e9a6a0fb"},
+    {file = "cryptography-3.4.8-cp36-abi3-musllinux_1_1_aarch64.whl", hash = "sha256:3c4129fc3fdc0fa8e40861b5ac0c673315b3c902bbdc05fc176764815b43dd1d"},
+    {file = "cryptography-3.4.8-cp36-abi3-musllinux_1_1_x86_64.whl", hash = "sha256:695104a9223a7239d155d7627ad912953b540929ef97ae0c34c7b8bf30857e89"},
     {file = "cryptography-3.4.8-cp36-abi3-win32.whl", hash = "sha256:21ca464b3a4b8d8e86ba0ee5045e103a1fcfac3b39319727bc0fc58c09c6aff7"},
     {file = "cryptography-3.4.8-cp36-abi3-win_amd64.whl", hash = "sha256:3520667fda779eb788ea00080124875be18f2d8f0848ec00733c0ec3bb8219fc"},
     {file = "cryptography-3.4.8-pp36-pypy36_pp73-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:d2a6e5ef66503da51d2110edf6c403dc6b494cc0082f85db12f54e9c5d4c3ec5"},
@@ -1809,8 +1811,8 @@ sqlparse = [
     {file = "sqlparse-0.4.2.tar.gz", hash = "sha256:0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae"},
 ]
 strawberry-graphql = [
-    {file = "strawberry-graphql-0.79.0.tar.gz", hash = "sha256:caab4202b9864443e9aa71b1d38dec6e0803d563b27bca0fb44064f6f6317d80"},
-    {file = "strawberry_graphql-0.79.0-py3-none-any.whl", hash = "sha256:7cdd2efd3a4df2032999a8a8d23aee5dff9c0a829447249152252b09b955bf1e"},
+    {file = "strawberry-graphql-0.80.2.tar.gz", hash = "sha256:ad9a6078018d003e831d5c86dfaa57509b316db853d330b4e0c4636ed8702211"},
+    {file = "strawberry_graphql-0.80.2-py3-none-any.whl", hash = "sha256:237b2be22832a308c479b2d078230907645be8bd7fc6d133dc266472f5c6704e"},
 ]
 strawberry-graphql-django = [
     {file = "strawberry-graphql-django-0.2.5.tar.gz", hash = "sha256:483d97c24ce440a1e3cb92ec3e1fdc0cf534d9afa79600396b0a27a5d9d97793"},
