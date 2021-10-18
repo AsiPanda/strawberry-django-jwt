@@ -1,9 +1,41 @@
+import base64
+
 import django
+import pytest
+from django.contrib.auth.models import User
+from django.test import TestCase as DjangoTestCase, Client
+from rest_framework.test import APIClient
 
 from strawberry_django_jwt.backends import JSONWebTokenBackend
 from strawberry_django_jwt.exceptions import JSONWebTokenError
 from strawberry_django_jwt.settings import jwt_settings
 from .testcases import TestCase
+
+
+@pytest.mark.django_db
+class MultipleBackendsTests(DjangoTestCase):
+    django_client: Client
+    djrf_client: APIClient
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.django_client = Client()
+        cls.djrf_client = APIClient()
+        super().setUpClass()
+
+    def test_djrf_backend(self):
+        response = self.djrf_client.get("/users")
+        assert response.status_code == 401
+
+    def test_djrf_backend_authenticated(self):
+        User.objects.create_user(
+            username="test", password="test_pass", email="test@test.test"
+        )
+        self.djrf_client.credentials(
+            HTTP_AUTHORIZATION=f'Basic {base64.b64encode(b"test:test_pass").decode()}'
+        )
+        response = self.djrf_client.get("/users")
+        assert response.status_code == 200
 
 
 class BackendsTests(TestCase):

@@ -8,11 +8,11 @@ from typing import cast
 import jwt
 from asgiref.sync import sync_to_async
 from django.contrib.auth import get_user_model
-from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpRequest
 from django.utils.translation import gettext as _
 from graphql import GraphQLResolveInfo
 from packaging.version import parse as parse_ver
+from rest_framework.request import Request
 from strawberry.annotation import StrawberryAnnotation  # type: ignore
 from strawberry.arguments import StrawberryArgument
 from strawberry.django.context import StrawberryDjangoContext
@@ -231,14 +231,11 @@ def maybe_thenable(obj, on_resolve):
 
 
 def get_context(
-    info: Union[HttpRequest, Info[Any, Any], GraphQLResolveInfo]
-) -> Union[HttpRequest, WSGIRequest]:
-    if isinstance(info, HttpRequest):
-        return info
-    try:
-        ctx = info.context
-    except AttributeError:
-        return info
-    if isinstance(ctx, StrawberryDjangoContext):
-        return ctx.request
-    return ctx
+    info: Union[HttpRequest, Request, Info[Any, Any], GraphQLResolveInfo]
+) -> Any:
+    if hasattr(info, "context"):
+        ctx = getattr(info, "context")
+        if isinstance(ctx, StrawberryDjangoContext):
+            return ctx.request
+        return ctx
+    return info

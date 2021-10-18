@@ -4,10 +4,10 @@
     <facet type="django" name="Django">
       <configuration>
         <option name="rootFolder" value="$MODULE_DIR$" />
-        <option name="settingsModule" value="tests/settings.py" />
+        <option name="settingsModule" value="tests/example_app/settings.py" />
         <option name="manageScript" value="" />
         <option name="environment" value="&lt;map/&gt;" />
-        <option name="doNotUseTestRunner" value="false" />
+        <option name="doNotUseTestRunner" value="true" />
         <option name="trackFilePattern" value="" />
       </configuration>
     </facet>
