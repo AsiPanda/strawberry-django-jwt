@@ -52,6 +52,7 @@ safety = "^1.0"
 pylint = "^2.11.1"
 poetry = "^1.1.10"
 djangorestframework-stubs = "^1.4.0"
+djangorestframework = "^3.12.4"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
