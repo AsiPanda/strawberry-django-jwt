@@ -235,7 +235,10 @@ def get_context(
 ) -> Union[HttpRequest, WSGIRequest]:
     if isinstance(info, HttpRequest):
         return info
-    ctx = info.context
+    try:
+        ctx = info.context
+    except AttributeError:
+        return info
     if isinstance(ctx, StrawberryDjangoContext):
         return ctx.request
     return ctx
