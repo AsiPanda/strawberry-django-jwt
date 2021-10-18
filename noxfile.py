@@ -110,17 +110,16 @@ def safety(session_: Session) -> None:
 def mypy(session_: Session) -> None:
     """Type-check using mypy."""
     args = session_.posargs or ["strawberry_django_jwt", "tests"]
-    deps = [
-        ".",
-        "mypy",
-        "pytest",
-        "django-stubs",
-        "types-cryptography",
-        "types-mock",
-        "types-pkg_resources",
-        "types-jwt",
-    ]
-    session_.install(*deps)
+    requirements = Path("requirements.txt")
+    session_.run(
+        "poetry",
+        "export",
+        f"-o{requirements}",
+        "--dev",
+        "--without-hashes",
+        external=True,
+    )
+    session_.install(f"-r{requirements}")
     session_.run("mypy", *args)
     if not session_.posargs:
         session_.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
