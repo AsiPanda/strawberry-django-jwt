@@ -50,7 +50,7 @@ jobs:
         run: |
           poetry build --ansi
       - name: Build and publish to PyPi
-        uses: JRubics/poetry-publish@v1.8
+        uses: JRubics/poetry-publish@v1.9
         with:
           pypi_token: ${{ secrets.PYPI_TOKEN }}
 
