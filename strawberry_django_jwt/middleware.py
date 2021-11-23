@@ -27,7 +27,7 @@ def allow_any(info, **kwargs):
 
     if field is None:
         return False
-    
+
     field_type = getattr(field.type, "of_type", None)
 
     return field_type is not None and any(
