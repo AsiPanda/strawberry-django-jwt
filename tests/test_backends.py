@@ -85,9 +85,9 @@ class AsyncBackendsTests(AsyncTestCase):
 
     async def test_authenticate_async(self):
         name = (
-            jwt_settings.JWT_AUTH_HEADER_NAME.replace("HTTP_", "")
-            if django.VERSION[:2] == (3, 2)
-            else jwt_settings.JWT_AUTH_HEADER_NAME
+            jwt_settings.JWT_AUTH_HEADER_NAME
+            if django.VERSION[:2] < (3, 2)
+            else jwt_settings.JWT_AUTH_HEADER_NAME.replace("HTTP_", "")
         )
         headers = {
             name: f"{jwt_settings.JWT_AUTH_HEADER_PREFIX} {self.token}",
@@ -102,9 +102,9 @@ class AsyncBackendsTests(AsyncTestCase):
 
     async def test_authenticate_fail_async(self):
         name = (
-            jwt_settings.JWT_AUTH_HEADER_NAME.replace("HTTP_", "")
-            if django.VERSION[:2] == (3, 2)
-            else jwt_settings.JWT_AUTH_HEADER_NAME
+            jwt_settings.JWT_AUTH_HEADER_NAME
+            if django.VERSION[:2] < (3, 2)
+            else jwt_settings.JWT_AUTH_HEADER_NAME.replace("HTTP_", "")
         )
         headers = {
             name: f"{jwt_settings.JWT_AUTH_HEADER_PREFIX} invalid",

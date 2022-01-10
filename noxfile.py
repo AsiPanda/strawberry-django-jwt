@@ -8,7 +8,7 @@ from nox import session
 
 package = "strawberry_django_jwt"
 python_versions = ["3.9", "3.8", "3.7"]
-django_versions = ["3.1", "3.2"]
+django_versions = ["3.1", "3.2", "4.0"]
 pyjwt_versions = ["1.7.1", "2.1.0"]
 strawberry_graphql_versions = ["0.69.0", "latest"]
 nox.needs_version = ">= 2021.6.6"
@@ -125,9 +125,17 @@ def mypy(session_: Session) -> None:
         session_.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
 
 
-@session(name="tests", python=python_versions)
-@nox.parametrize("django", django_versions)
-def tests(session_: Session, django: str) -> None:
+@session(name="tests")
+@nox.parametrize(
+    "python,django",
+    [
+        (python, dependency)
+        for python in python_versions
+        for dependency in django_versions
+        if (python, dependency) != ("3.7", "4.0")
+    ],
+)
+def tests(session_: Session, python: str, django: str) -> None:
     """Run the test suite."""
     requirements = Path("requirements.txt")
     session_.run(

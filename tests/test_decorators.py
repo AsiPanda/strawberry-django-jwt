@@ -1,3 +1,4 @@
+import django
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth.models import Permission
 from strawberry_django_jwt import decorators
@@ -107,8 +108,10 @@ class CSRFRotationTests(TestCase):
         decorators.csrf_rotation(
             lambda cls, info, *args, **kwargs: None,
         )(self, info_mock)
-
-        self.assertTrue(info_mock.context.csrf_cookie_needs_reset)
+        if django.VERSION >= (4, 0):
+            self.assertTrue(info_mock.context.META["CSRF_COOKIE_NEEDS_UPDATE"])
+        else:
+            self.assertTrue(info_mock.context.csrf_cookie_needs_reset)
 
 
 class HelperDecoratorTests(TestCase):
