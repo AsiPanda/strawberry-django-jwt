@@ -9,18 +9,14 @@ from nox import session
 package = "strawberry_django_jwt"
 python_versions = ["3.10", "3.9", "3.8", "3.7"]
 django_versions = ["4.0", "3.2", "3.1"]
+invalid_sessions = [
+    ("3.7", "4.0"),
+    ("3.10", "3.1"),
+]
 pyjwt_versions = ["1.7.1", "2.1.0"]
 strawberry_graphql_versions = ["0.69.0", "latest"]
 nox.needs_version = ">= 2021.6.6"
-nox.options.sessions = (
-    "pre-commit",
-    "safety",
-    "mypy",
-    "tests",
-    "tests_pyjwt",
-    "tests_strawberry_graphql",
-    "coverage",
-)
+nox.options.sessions = ("tests",)
 nox.options.reuse_existing_virtualenvs = True
 
 
@@ -125,22 +121,12 @@ def mypy(session_: Session) -> None:
         session_.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
 
 
-@session(name="tests")
-@nox.parametrize(
-    "python,django",
-    [
-        (python, dependency)
-        for python in python_versions
-        for dependency in django_versions
-        if (python, dependency)
-        not in [
-            ("3.7", "4.0"),
-            ("3.10", "3.1"),
-        ]
-    ],
-)
-def tests(session_: Session, python: str, django: str) -> None:
+@session(name="tests", python=python_versions)
+@nox.parametrize("django", django_versions)
+def tests(session_: Session, django: str) -> None:
     """Run the test suite."""
+    if (session_.python, django) in invalid_sessions:
+        session_.skip()
     requirements = Path("requirements.txt")
     session_.run(
         "poetry",
