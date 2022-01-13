@@ -1,7 +1,6 @@
 import json
 from unittest import mock
 
-import django
 import strawberry
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission, User
@@ -45,8 +44,6 @@ class TestCase(UserTestCase):
 
     def info(self, user=None, **headers):
         request = self.request_factory.post("/", **headers)
-        if django.VERSION[:2] == (3, 1):
-            request.META.update({f"HTTP_{k}": v for k, v in headers.items()})
 
         if user is not None:
             request.user = user
@@ -133,8 +130,6 @@ class AsyncTestCase(AsyncUserTestCase):
 
     def info(self, user=None, **headers):
         request = self.request_factory.post("/", **headers)
-        if django.VERSION[:2] == (3, 1):
-            request.META.update({f"HTTP_{k}": v for k, v in headers.items()})
 
         if user is not None:
             request.user = user

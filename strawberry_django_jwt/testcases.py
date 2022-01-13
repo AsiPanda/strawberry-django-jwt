@@ -1,4 +1,3 @@
-import django
 import strawberry
 from django.contrib.auth.models import AnonymousUser
 from django.core.handlers.asgi import ASGIRequest
@@ -117,10 +116,7 @@ class AsyncJSONWebTokenClient(AsyncSchemaRequestFactory, AsyncClient):
         self._credentials = kwargs
 
     def execute(self, query, variables=None, **extra):
-        if django.VERSION[:2] == (3, 1):
-            context = self.post(query, custom_headers=self._credentials, **extra)
-        else:
-            context = self.post(query, **self._credentials, **extra)
+        context = self.post(query, **self._credentials, **extra)
 
         return super().execute(
             query,
