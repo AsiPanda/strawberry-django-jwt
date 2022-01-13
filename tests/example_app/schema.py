@@ -5,7 +5,10 @@ from strawberry import Schema
 
 import strawberry_django_jwt.mutations as jwt_mutations
 from strawberry_django_jwt.decorators import login_required
-from strawberry_django_jwt.middleware import AsyncJSONWebTokenMiddleware
+from strawberry_django_jwt.middleware import (
+    AsyncJSONWebTokenMiddleware,
+    JSONWebTokenMiddleware,
+)
 
 
 @strawberry.type
@@ -23,6 +26,10 @@ class Query:
             "Sunday",
         ]
 
+    @strawberry.field
+    def value(self) -> int:
+        return 1
+
 
 @strawberry.type
 class Mutation:
@@ -34,4 +41,7 @@ class Mutation:
 
 schema = Schema(
     query=Query, mutation=Mutation, extensions=[AsyncJSONWebTokenMiddleware]
+)
+sync_schema = Schema(
+    query=Query, mutation=Mutation, extensions=[JSONWebTokenMiddleware]
 )
