@@ -11,6 +11,7 @@ from django.core.handlers.asgi import ASGIRequest
 from django.middleware.csrf import rotate_token
 from django.utils.translation import gettext as _
 from strawberry.types import Info
+from strawberry_django.utils import is_async
 
 from . import exceptions
 from . import signals
@@ -173,7 +174,7 @@ def token_auth(f):
     @refresh_expiration
     def wrapper(cls, info, password, **kwargs):
         context = get_context(info)
-        if inspect.isawaitable(f) or isinstance(context, ASGIRequest):
+        if inspect.isawaitable(f) or (isinstance(context, ASGIRequest) and is_async()):
             return wrapper_async(cls, info, password, **kwargs)
         context._jwt_token_auth = True
         username = kwargs.get(get_user_model().USERNAME_FIELD)
