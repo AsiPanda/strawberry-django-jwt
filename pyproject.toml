@@ -35,7 +35,7 @@ importlib-metadata = { version = "^1.7.0", python = "<=3.7" }
 
 [tool.poetry.dev-dependencies]
 cryptography = "^36.0"
-coverage = "^6.1"
+coverage = "^6.3"
 pytest = "^6.2"
 pytest-cov = "^3.0"
 pytest-django = "^4.0.0"
