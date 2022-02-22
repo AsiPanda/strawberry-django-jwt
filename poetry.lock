@@ -75,6 +75,14 @@ pycodestyle = ">=2.8.0"
 toml = "*"
 
 [[package]]
+name = "backports.cached-property"
+version = "1.0.1"
+description = "cached_property() - computed once per instance, cached as attribute"
+category = "main"
+optional = false
+python-versions = ">=3.6.0"
+
+[[package]]
 name = "cachecontrol"
 version = "0.12.10"
 description = "httplib2 caching for requests"
@@ -90,14 +98,6 @@ requests = "*"
 [package.extras]
 filecache = ["lockfile (>=0.9)"]
 redis = ["redis (>=2.10.5)"]
-
-[[package]]
-name = "cached-property"
-version = "1.5.2"
-description = "A decorator for caching properties in classes."
-category = "main"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "cachy"
@@ -1136,14 +1136,14 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "strawberry-graphql"
-version = "0.93.23"
+version = "0.97.0"
 description = "A library for creating GraphQL APIs"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
-cached-property = ">=1.5.2,<2.0.0"
+"backports.cached-property" = ">=1.0.1,<2.0.0"
 click = ">=7.0,<9.0"
 graphql-core = ">=3.1.0,<3.2.0"
 pygments = ">=2.3,<3.0"
@@ -1154,7 +1154,7 @@ typing_extensions = ">=3.7.4,<5.0.0"
 
 [package.extras]
 asgi = ["starlette (>=0.13.6,<0.17.0)"]
-debug-server = ["starlette (>=0.13.6,<0.17.0)", "uvicorn (>=0.11.6,<0.17.0)"]
+debug-server = ["starlette (>=0.13.6,<0.17.0)", "uvicorn (>=0.11.6,<0.18.0)"]
 django = ["Django (>=2.2,<4)", "Django (>=2.2,<5)", "asgiref (>=3.2,<4.0)"]
 flask = ["flask (>=1.1,<2.0)"]
 opentelemetry = ["opentelemetry-api (<2)", "opentelemetry-sdk (<2)"]
@@ -1438,13 +1438,13 @@ autopep8 = [
     {file = "autopep8-1.6.0-py2.py3-none-any.whl", hash = "sha256:ed77137193bbac52d029a52c59bec1b0629b5a186c495f1eb21b126ac466083f"},
     {file = "autopep8-1.6.0.tar.gz", hash = "sha256:44f0932855039d2c15c4510d6df665e4730f2b8582704fa48f9c55bd3e17d979"},
 ]
+"backports.cached-property" = [
+    {file = "backports.cached-property-1.0.1.tar.gz", hash = "sha256:1a5ef1e750f8bc7d0204c807aae8e0f450c655be0cf4b30407a35fd4bb27186c"},
+    {file = "backports.cached_property-1.0.1-py3-none-any.whl", hash = "sha256:687b5fe14be40aadcf547cae91337a1fdb84026046a39370274e54d3fe4fb4f9"},
+]
 cachecontrol = [
     {file = "CacheControl-0.12.10-py2.py3-none-any.whl", hash = "sha256:b0d43d8f71948ef5ebdee5fe236b86c6ffc7799370453dccb0e894c20dfa487c"},
     {file = "CacheControl-0.12.10.tar.gz", hash = "sha256:d8aca75b82eec92d84b5d6eb8c8f66ea16f09d2adb09dbca27fe2d5fc8d3732d"},
-]
-cached-property = [
-    {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
-    {file = "cached_property-1.5.2-py2.py3-none-any.whl", hash = "sha256:df4f613cf7ad9a588cc381aaf4a512d26265ecebd5eb9e1ba12f1319eb85a6a0"},
 ]
 cachy = [
     {file = "cachy-0.3.0-py2.py3-none-any.whl", hash = "sha256:338ca09c8860e76b275aff52374330efedc4d5a5e45dc1c5b539c1ead0786fe7"},
@@ -2136,8 +2136,8 @@ sqlparse = [
     {file = "sqlparse-0.4.2.tar.gz", hash = "sha256:0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae"},
 ]
 strawberry-graphql = [
-    {file = "strawberry-graphql-0.93.23.tar.gz", hash = "sha256:061b1c54c69dd7e11cb2b7e7b474392e4b32943789e7ac0b47954fb965999d31"},
-    {file = "strawberry_graphql-0.93.23-py3-none-any.whl", hash = "sha256:b2a9a4af0a491e1626aafc420e484f551f89eacb13c0e48de9ab5dd8f7e5ca34"},
+    {file = "strawberry-graphql-0.97.0.tar.gz", hash = "sha256:0bd486111166da1d6e48a2c95de437096ca2ba28e2b2963b64a93136c54bef02"},
+    {file = "strawberry_graphql-0.97.0-py3-none-any.whl", hash = "sha256:2f304822c6ecc866e07f11618fbdf826676ab61af5f757794805ee1853504603"},
 ]
 strawberry-graphql-django = [
     {file = "strawberry-graphql-django-0.3rc1.tar.gz", hash = "sha256:02b23746cc890710fed9c9f1dbc0c08594011ebc193a5044501e7cd0a12a4ab4"},
