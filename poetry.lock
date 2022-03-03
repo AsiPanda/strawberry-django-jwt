@@ -418,7 +418,7 @@ testing = ["covdefaults (>=1.2.0)", "coverage (>=4)", "pytest (>=4)", "pytest-co
 
 [[package]]
 name = "graphql-core"
-version = "3.1.7"
+version = "3.2.0"
 description = "GraphQL implementation for Python, a port of GraphQL.js, the JavaScript reference implementation for GraphQL."
 category = "main"
 optional = false
@@ -1136,7 +1136,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "strawberry-graphql"
-version = "0.97.0"
+version = "0.99.1"
 description = "A library for creating GraphQL APIs"
 category = "main"
 optional = false
@@ -1145,7 +1145,7 @@ python-versions = ">=3.7,<4.0"
 [package.dependencies]
 "backports.cached-property" = ">=1.0.1,<2.0.0"
 click = ">=7.0,<9.0"
-graphql-core = ">=3.1.0,<3.2.0"
+graphql-core = ">=3.2.0,<3.3.0"
 pygments = ">=2.3,<3.0"
 python-dateutil = ">=2.7.0,<3.0.0"
 python-multipart = ">=0.0.5,<0.0.6"
@@ -1655,8 +1655,8 @@ filelock = [
     {file = "filelock-3.4.2.tar.gz", hash = "sha256:38b4f4c989f9d06d44524df1b24bd19e167d851f19b50bf3e3559952dddc5b80"},
 ]
 graphql-core = [
-    {file = "graphql-core-3.1.7.tar.gz", hash = "sha256:62ec192150ccecd9a18cfb79e3e72eb7d1fd68fb594ef19c40099b6deec8ef0c"},
-    {file = "graphql_core-3.1.7-py3-none-any.whl", hash = "sha256:9b460f60320be01c7f3b1766cf3e406933003008055079b9d983b8f3988f4400"},
+    {file = "graphql-core-3.2.0.tar.gz", hash = "sha256:86e2a0be008bfde19ef78388de8a725a1d942a9190ca431c24a60837973803ce"},
+    {file = "graphql_core-3.2.0-py3-none-any.whl", hash = "sha256:0dda7e63676f119bb3d814621190fedad72fda07a8e9ab780bedd9f1957c6dc6"},
 ]
 h11 = [
     {file = "h11-0.12.0-py3-none-any.whl", hash = "sha256:36a3cb8c0a032f56e2da7084577878a035d3b61d104230d4bd49c0c6b555a9c6"},
@@ -2130,8 +2130,8 @@ sqlparse = [
     {file = "sqlparse-0.4.2.tar.gz", hash = "sha256:0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae"},
 ]
 strawberry-graphql = [
-    {file = "strawberry-graphql-0.97.0.tar.gz", hash = "sha256:0bd486111166da1d6e48a2c95de437096ca2ba28e2b2963b64a93136c54bef02"},
-    {file = "strawberry_graphql-0.97.0-py3-none-any.whl", hash = "sha256:2f304822c6ecc866e07f11618fbdf826676ab61af5f757794805ee1853504603"},
+    {file = "strawberry-graphql-0.99.1.tar.gz", hash = "sha256:2a9f609223038810d4abad2972c1712dd2954c2d2747184d68e10d32cd49892f"},
+    {file = "strawberry_graphql-0.99.1-py3-none-any.whl", hash = "sha256:fa6c5e12f6ab7db8d805f337a6b55f16fc77d80cb718b9ccfaa49cb63875e8cf"},
 ]
 strawberry-graphql-django = [
     {file = "strawberry-graphql-django-0.3rc1.tar.gz", hash = "sha256:02b23746cc890710fed9c9f1dbc0c08594011ebc193a5044501e7cd0a12a4ab4"},
