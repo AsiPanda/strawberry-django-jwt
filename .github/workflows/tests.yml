@@ -40,7 +40,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nox-
       - name: Check out the repository
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3.0.0
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2.3.2
@@ -97,7 +97,7 @@ jobs:
     needs: tests
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3.0.0
 
       - name: Set up Python 3.9
         uses: actions/setup-python@v2.3.2
