@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Cache nox evironments
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: .nox
           key: ${{ runner.os }}-nox-${{ hashFiles('poetry.lock') }}
@@ -78,7 +78,7 @@ jobs:
           result = "${{ runner.os }}-{}-{}-pre-commit".format(python, digest[:8])
           print("::set-output name=result::{}".format(result))
       - name: Restore pre-commit cache
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v3
         if: matrix.session == 'pre-commit'
         with:
           path: ~/.cache/pre-commit
