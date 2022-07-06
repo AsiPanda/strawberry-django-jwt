@@ -50,10 +50,14 @@ jobs:
           path: .venv
           key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
+      - name: Install dependencies
+        run: poetry run pip install "Django~=${{ matrix.django-version }}"
+
+
       - name: Run tests
         run: |
-          poetry run pip install "Django~=${{ matrix.django-version }}"
-          poetry run python -m pytest --cov-report=xml
+          poetry install
+          poetry run pytest --cov-report=xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
