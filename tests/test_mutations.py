@@ -4,8 +4,9 @@ from unittest import mock
 
 from django.contrib.auth import get_user_model
 from django_mock_queries.query import MockModel, MockSet  # type: ignore
+from strawberry import auto
 import strawberry.django
-from strawberry.django import auto, mutations
+from strawberry.django import mutations
 from strawberry.types import Info
 
 from strawberry_django_jwt.decorators import (

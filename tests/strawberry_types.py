@@ -1,5 +1,5 @@
+from strawberry import auto
 import strawberry_django
-from strawberry_django import auto
 
 from tests import models
 
