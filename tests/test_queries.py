@@ -1,12 +1,12 @@
 from typing import List
 
-import pytest
-import strawberry
-import strawberry_django
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 from graphql import get_introspection_query
+import pytest
+import strawberry
 from strawberry.types import Info
+import strawberry_django
 
 from strawberry_django_jwt.decorators import (
     dispose_extra_kwargs,
@@ -17,8 +17,8 @@ from strawberry_django_jwt.mixins import JSONWebTokenMixin
 from strawberry_django_jwt.model_object_types import UserType
 from strawberry_django_jwt.settings import jwt_settings
 from strawberry_django_jwt.shortcuts import get_token
-from tests.strawberry_types import MyTestModel
 from tests.decorators import OverrideJwtSettings
+from tests.strawberry_types import MyTestModel
 from tests.testcases import AsyncSchemaTestCase, SchemaTestCase
 
 
@@ -28,8 +28,7 @@ class QueriesTests(SchemaTestCase):
         @strawberry.field
         @dispose_extra_kwargs
         def test(self, info) -> UserType:
-            ret = UserType(**info.context.user.__dict__)
-            return ret
+            return UserType(**info.context.user.__dict__)
 
     def setUp(self):
         super().setUp()
@@ -104,9 +103,7 @@ class QueriesTests(SchemaTestCase):
         self.assertEqual(data["testBegin"].get("username"), self.user.username)
         self.assertEqual(data["testEnd"].get("username"), self.user.username)
         self.assertEqual(data["testToken"].get("username"), self.user.username)
-        self.assertEqual(
-            data["testOtherToken"].get("username"), self.other_user.username
-        )
+        self.assertEqual(data["testOtherToken"].get("username"), self.other_user.username)
 
         self.assertIsNone(response.errors)
 
@@ -290,8 +287,7 @@ class AsyncQueriesTests(AsyncSchemaTestCase):
         @strawberry.field
         @dispose_extra_kwargs
         async def test(self, info) -> UserType:
-            ret = UserType(**info.context.user.__dict__)
-            return ret
+            return UserType(**info.context.user.__dict__)
 
     def setUp(self):
         super().setUp()
@@ -362,9 +358,7 @@ class AsyncQueriesTests(AsyncSchemaTestCase):
         self.assertEqual(data["testBegin"].get("username"), self.user.username)
         self.assertEqual(data["testEnd"].get("username"), self.user.username)
         self.assertEqual(data["testToken"].get("username"), self.user.username)
-        self.assertEqual(
-            data["testOtherToken"].get("username"), self.other_user.username
-        )
+        self.assertEqual(data["testOtherToken"].get("username"), self.other_user.username)
 
         self.assertIsNone(response.errors)
 

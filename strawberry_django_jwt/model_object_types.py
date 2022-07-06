@@ -1,11 +1,8 @@
 import inspect
-from typing import List
-from typing import Optional
+from typing import List, Optional
 
+from django.contrib.auth.models import AbstractUser, Group, Permission
 import strawberry.django
-from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import Group
-from django.contrib.auth.models import Permission
 
 BORING = dir(type("dummy", (object,), {}))
 
@@ -30,7 +27,7 @@ class UserType:
                 continue
             setattr(self, f, kwargs.get(f, v))
 
-    id: Optional[strawberry.ID] = None
+    id: Optional[strawberry.ID] = None  # noqa A003
     pk: Optional[strawberry.ID] = None
     username: str = ""
     is_authenticated: bool = False

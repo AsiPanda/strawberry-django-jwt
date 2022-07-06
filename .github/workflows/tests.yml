@@ -32,7 +32,7 @@ jobs:
       NOXSESSION: ${{ matrix.session }}
 
     steps:
-      - name: Cache nox evironments
+      - name: Cache nox environments
         uses: actions/cache@v3
         with:
           path: .nox

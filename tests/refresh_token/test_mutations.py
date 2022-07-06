@@ -105,9 +105,7 @@ class DeleteCookieTests(mixins.DeleteCookieMixin, CookieTestCase):
 
     @strawberry.type
     class Mutation:
-        delete_cookie = (
-            strawberry_django_jwt.mutations.DeleteRefreshTokenCookie.delete_cookie
-        )
+        delete_cookie = strawberry_django_jwt.mutations.DeleteRefreshTokenCookie.delete_cookie
 
 
 class AsyncCookieTokenAuthTests(mixins.AsyncCookieTokenAuthMixin, AsyncCookieTestCase):

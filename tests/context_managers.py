@@ -1,6 +1,5 @@
 from contextlib import contextmanager
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 from unittest import mock
 
 from strawberry_django_jwt.settings import jwt_settings

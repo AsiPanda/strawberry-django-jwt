@@ -36,12 +36,10 @@ class StatusHandlingGraphQLView(BaseStatusHandlingGraphQLView, GraphQLView):
         self, request: HttpRequest, result: ExecutionResult
     ) -> StatusGraphQLHTTPResponse:
         res = make_status_response(process_result(result))
-        if result.errors:
-            if any(
-                isinstance(err, JSONWebTokenError)
-                for err in [e.original_error for e in result.errors]
-            ):
-                res["status"] = 401
+        if result.errors and any(
+            isinstance(err, JSONWebTokenError) for err in [e.original_error for e in result.errors]
+        ):
+            res["status"] = 401
         return res
 
 
@@ -50,10 +48,8 @@ class AsyncStatusHandlingGraphQLView(BaseStatusHandlingGraphQLView, AsyncGraphQL
         self, request: HttpRequest, result: ExecutionResult
     ) -> StatusGraphQLHTTPResponse:
         res = make_status_response(process_result(result))
-        if result.errors:
-            if any(
-                isinstance(err, JSONWebTokenError)
-                for err in [e.original_error for e in result.errors]
-            ):
-                res["status"] = 401
+        if result.errors and any(
+            isinstance(err, JSONWebTokenError) for err in [e.original_error for e in result.errors]
+        ):
+            res["status"] = 401
         return res

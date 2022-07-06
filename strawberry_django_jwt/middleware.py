@@ -82,9 +82,9 @@ class BaseJSONWebTokenMiddleware(Extension):
                 else:
                     context.user = AnonymousUser()
 
-        if (
-            _authenticate(context) or token_argument is not None
-        ) and self.authenticate_context(info, **kwargs):
+        if (_authenticate(context) or token_argument is not None) and self.authenticate_context(
+            info, **kwargs
+        ):
             return context, token_argument
         elif (
             info.field_name == "__schema"
@@ -93,9 +93,7 @@ class BaseJSONWebTokenMiddleware(Extension):
             and self.authenticate_context(info, **kwargs)
         ):
 
-            raise exceptions.PermissionDenied(
-                _("The introspection query requires authentication.")
-            )
+            raise exceptions.PermissionDenied(_("The introspection query requires authentication."))
 
         return context, token_argument
 
@@ -104,9 +102,9 @@ class JSONWebTokenMiddleware(BaseJSONWebTokenMiddleware):
     def resolve(self, _next, root, info: Info, *args, **kwargs):
         context, token_argument = self.resolve_base(info, **kwargs)
 
-        if (
-            _authenticate(context) or token_argument is not None
-        ) and self.authenticate_context(info, **kwargs):
+        if (_authenticate(context) or token_argument is not None) and self.authenticate_context(
+            info, **kwargs
+        ):
 
             user = authenticate(request=context, **kwargs)
 
@@ -123,9 +121,9 @@ class AsyncJSONWebTokenMiddleware(BaseJSONWebTokenMiddleware):
     async def resolve(self, _next, root, info: Info, *args, **kwargs):
         context, token_argument = self.resolve_base(info, **kwargs)
 
-        if (
-            _authenticate(context) or token_argument is not None
-        ) and self.authenticate_context(info, **kwargs):
+        if (_authenticate(context) or token_argument is not None) and self.authenticate_context(
+            info, **kwargs
+        ):
 
             user = await authenticate_async(request=context, **kwargs)
 

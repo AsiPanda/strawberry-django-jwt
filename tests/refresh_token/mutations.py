@@ -1,5 +1,4 @@
-from strawberry_django_jwt.mixins import JSONWebTokenMixin
-from strawberry_django_jwt.mixins import RefreshTokenMixin
+from strawberry_django_jwt.mixins import JSONWebTokenMixin, RefreshTokenMixin
 
 
 class Refresh(RefreshTokenMixin, JSONWebTokenMixin):

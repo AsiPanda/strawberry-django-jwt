@@ -1,11 +1,8 @@
-from typing import Any
-from typing import Dict
-from typing import Tuple
-from typing import Type
-from typing import TypeVar
+from typing import Any, Dict, Tuple, Type, TypeVar
 
-import strawberry.django
 from django.contrib.auth import get_user_model
+import strawberry.django
+
 from strawberry_django_jwt.settings import jwt_settings
 
 X = TypeVar("X", Any, Any)
