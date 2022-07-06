@@ -50,6 +50,7 @@ djangorestframework-stubs = "^1.4.0"
 djangorestframework = "^3.12.4"
 black = "^22.6.0"
 isort = "^5.10.1"
+mypy = "^0.961"
 
 
 [tool.pytest.ini_options]
