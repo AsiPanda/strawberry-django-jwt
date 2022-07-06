@@ -57,12 +57,10 @@ jobs:
       - name: Run tests
         run: |
           poetry install
-          poetry run pytest --cov-report=xml
+          poetry run pytest --cov app
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          fail_ci_if_error: true
+        uses: codecov/codecov-action@v3
 
   publish:
     runs-on: ubuntu-latest
