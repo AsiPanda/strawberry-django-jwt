@@ -778,7 +778,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "d3d44b68e07a510df15685d41556b7051e1a6709eeb5ffa95544f9432b8ea742"
+content-hash = "d7bba0a999e49fa8f0d9131a75b864f238a89c8c2d7cc157a5d6af69d12252e9"
 
 [metadata.files]
 asgiref = [
