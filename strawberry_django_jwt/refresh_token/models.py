@@ -71,4 +71,6 @@ class AbstractRefreshToken(models.Model):
 
 
 class RefreshToken(AbstractRefreshToken):
-    """RefreshToken default model."""
+    """
+    RefreshToken default model.
+    """

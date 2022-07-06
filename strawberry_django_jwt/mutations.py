@@ -38,7 +38,9 @@ class JSONWebTokenMutation(mixins.JSONWebTokenMixin):
 
 
 class ObtainJSONWebToken(JSONWebTokenMutation):
-    """Obtain JSON Web Token mutation."""
+    """
+    Obtain JSON Web Token mutation.
+    """
 
     @strawberry.mutation
     @token_auth
