@@ -11,6 +11,7 @@ from strawberry_django_jwt.middleware import (
 )
 from strawberry_django_jwt.settings import jwt_settings
 from tests.decorators import OverrideJwtSettings
+
 from .testcases import AsyncTestCase, TestCase
 
 
@@ -196,8 +197,8 @@ class AllowAnyTests(TestCase):
         )
         return info_mock
 
-    def info_with_type_mock(self, user, type=None):
-        type_mock = mock.Mock(type=mock.Mock(graphene_type=type))
+    def info_with_type_mock(self, user, type_=None):
+        type_mock = mock.Mock(type=mock.Mock(graphene_type=type_))
         return self.info_with_field_mock(user, type_mock)
 
     # TODO: Does not work currently, see Known Issues in README.md
@@ -299,9 +300,7 @@ class AuthenticateByHeaderTestsAsync(AsyncTestCase):
         info_mock = self.info(self.user, **headers)
 
         middleware = self.middleware(execution_context=info_mock.context)
-        with mock.patch(
-            "strawberry_django_jwt.middleware.authenticate_async"
-        ) as authenticate_mock:
+        with mock.patch("strawberry_django_jwt.middleware.authenticate_async") as authenticate_mock:
             await middleware.resolve(next_mock, None, info_mock)
 
         next_mock.assert_called_once_with(None, info_mock)
@@ -377,9 +376,7 @@ class AuthenticateByArgumentTestsAsync(AsyncTestCase):
     async def test_clear_session_authentication_async(self):
         next_mock = mock.Mock()
         info_mock = self.info(self.user)
-        info_mock.context.session = await sync_to_async(self.client.__getattribute__)(
-            "session"
-        )
+        info_mock.context.session = await sync_to_async(self.client.__getattribute__)("session")
 
         middleware = self.middleware(execution_context=info_mock.context)
         await middleware.resolve(next_mock, None, info_mock)

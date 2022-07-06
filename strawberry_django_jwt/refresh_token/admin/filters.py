@@ -26,6 +26,8 @@ class ExpiredFilter(BooleanListFilter):
         if self.value() == "no":
             return queryset.expired().filter(expired=False)
 
+        return None
+
 
 class RevokedFilter(BooleanListFilter):
     title = _("Revoked")
@@ -37,3 +39,5 @@ class RevokedFilter(BooleanListFilter):
 
         if self.value() == "no":
             return queryset.filter(revoked__isnull=True)
+
+        return None

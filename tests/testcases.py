@@ -1,12 +1,12 @@
 import json
 from unittest import mock
 
-import strawberry
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.test import AsyncRequestFactory, RequestFactory, testcases  # type: ignore
 from graphql.execution.execute import GraphQLResolveInfo
+import strawberry
 from strawberry.django.views import AsyncGraphQLView, GraphQLView
 
 from strawberry_django_jwt.decorators import jwt_cookie
@@ -110,7 +110,7 @@ class CookieTestCase(SchemaTestCase):
 
 
 class RelayCookieTestCase(RelaySchemaTestCase, CookieTestCase):
-    """RelayCookieTestCase"""
+    """RelayCookieTestCase."""
 
 
 class AsyncUserTestCase(testcases.TransactionTestCase):

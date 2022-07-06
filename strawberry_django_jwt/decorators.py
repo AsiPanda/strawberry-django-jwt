@@ -1,28 +1,27 @@
-import inspect
 from calendar import timegm
 from datetime import datetime
 from functools import wraps
+import inspect
 
-import django.contrib.auth.base_user
-import strawberry
 from asgiref.sync import sync_to_async
 from django.contrib.auth import get_user_model
+import django.contrib.auth.base_user
 from django.core.handlers.asgi import ASGIRequest
 from django.middleware.csrf import rotate_token
 from django.utils.translation import gettext as _
+import strawberry
 from strawberry.types import Info
 from strawberry_django.utils import is_async
 
-from . import exceptions
-from . import signals
+from . import exceptions, signals
 from .auth import authenticate
-from .refresh_token.shortcuts import create_refresh_token, refresh_token_lazy_async
-from .refresh_token.shortcuts import refresh_token_lazy
+from .refresh_token.shortcuts import (
+    create_refresh_token,
+    refresh_token_lazy,
+    refresh_token_lazy_async,
+)
 from .settings import jwt_settings
-from .utils import delete_cookie
-from .utils import get_context
-from .utils import maybe_thenable
-from .utils import set_cookie
+from .utils import delete_cookie, get_context, maybe_thenable, set_cookie
 
 __all__ = [
     "user_passes_test",
@@ -48,7 +47,6 @@ def with_info(target):
 
     # Create a fake target function with info argument
     target_inspection = inspect.signature(target)
-    target_clean = target
     if "info" not in target_inspection.parameters.keys():
         signature_add_fn.__signature__ = inspect.Signature(
             [
@@ -59,8 +57,8 @@ def with_info(target):
         )
         # Copy annotations as well
         signature_add_fn.__annotations__ = target.__annotations__
-        target_clean = signature_add_fn
-    return target_clean
+        return signature_add_fn
+    return target
 
 
 def context(func):
@@ -216,11 +214,9 @@ def refresh_expiration(f):
 def csrf_rotation(f):
     @wraps(f)
     def wrapper(cls, info, *args, **kwargs):
-        result = f(cls, info, **kwargs)
-
         if jwt_settings.JWT_CSRF_ROTATION:
             rotate_token(info.context)
-        return result
+        return f(cls, info, **kwargs)
 
     return wrapper
 
@@ -228,7 +224,7 @@ def csrf_rotation(f):
 def setup_jwt_cookie(f):
     async def set_token(ctx, result):
         res = await result
-        setattr(ctx, "jwt_token", res.token)
+        ctx.jwt_token = res.token
         return res
 
     @wraps(f)
@@ -262,9 +258,7 @@ def jwt_cookie(view_func):
             )
             if hasattr(request, "jwt_refresh_token"):
                 refresh_token = request.jwt_refresh_token
-                expires = (
-                    refresh_token.created + jwt_settings.JWT_REFRESH_EXPIRATION_DELTA
-                )
+                expires = refresh_token.created + jwt_settings.JWT_REFRESH_EXPIRATION_DELTA
 
                 set_cookie(
                     response,

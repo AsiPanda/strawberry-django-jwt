@@ -1,7 +1,7 @@
 import json
 
-import strawberry
 from django.contrib.auth import get_user_model
+import strawberry
 
 from strawberry_django_jwt.decorators import login_required
 from strawberry_django_jwt.middleware import (

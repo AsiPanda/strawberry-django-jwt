@@ -3,12 +3,9 @@ from importlib import reload
 import strawberry_django_jwt
 from strawberry_django_jwt.settings import jwt_settings
 from strawberry_django_jwt.shortcuts import get_token
-from strawberry_django_jwt.signals import token_issued
-from strawberry_django_jwt.signals import token_refreshed
+from strawberry_django_jwt.signals import token_issued, token_refreshed
 
-from .context_managers import back_to_the_future
-from .context_managers import catch_signal
-from .context_managers import refresh_expired
+from .context_managers import back_to_the_future, catch_signal, refresh_expired
 from .decorators import OverrideJwtSettings
 
 
@@ -65,9 +62,9 @@ class VerifyMixin:
 
 class RefreshMixin:
     def test_refresh(self):
-        with catch_signal(
-            token_refreshed
-        ) as token_refreshed_handler, back_to_the_future(seconds=1):
+        with catch_signal(token_refreshed) as token_refreshed_handler, back_to_the_future(
+            seconds=1
+        ):
 
             response = self.execute(
                 {

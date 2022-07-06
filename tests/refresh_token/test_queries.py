@@ -8,8 +8,8 @@ from strawberry_django_jwt.decorators import login_required
 from strawberry_django_jwt.mixins import JSONWebTokenMixin
 from strawberry_django_jwt.settings import jwt_settings
 from tests.decorators import OverrideJwtSettings
-from tests.testcases import SchemaTestCase
 from tests.strawberry_types import MyTestModel
+from tests.testcases import SchemaTestCase
 
 
 class QueriesTests(SchemaTestCase):

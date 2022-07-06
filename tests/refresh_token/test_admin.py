@@ -1,4 +1,5 @@
 from django.contrib.admin import site
+
 from strawberry_django_jwt.refresh_token import admin
 from strawberry_django_jwt.refresh_token.utils import get_refresh_token_model
 from strawberry_django_jwt.shortcuts import create_refresh_token

@@ -5,8 +5,7 @@ from strawberry_django_jwt.refresh_token.signals import refresh_token_revoked
 from strawberry_django_jwt.settings import jwt_settings
 from strawberry_django_jwt.shortcuts import create_refresh_token
 
-from ..context_managers import catch_signal
-from ..context_managers import refresh_expired
+from ..context_managers import catch_signal, refresh_expired
 from ..testcases import UserTestCase
 
 

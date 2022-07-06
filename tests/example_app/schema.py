@@ -3,12 +3,12 @@ from typing import List
 import strawberry
 from strawberry import Schema
 
-import strawberry_django_jwt.mutations as jwt_mutations
 from strawberry_django_jwt.decorators import login_required
 from strawberry_django_jwt.middleware import (
     AsyncJSONWebTokenMiddleware,
     JSONWebTokenMiddleware,
 )
+import strawberry_django_jwt.mutations as jwt_mutations
 
 
 @strawberry.type
@@ -39,9 +39,5 @@ class Mutation:
     delete_cookie = jwt_mutations.DeleteJSONWebTokenCookie.delete_cookie
 
 
-schema = Schema(
-    query=Query, mutation=Mutation, extensions=[AsyncJSONWebTokenMiddleware]
-)
-sync_schema = Schema(
-    query=Query, mutation=Mutation, extensions=[JSONWebTokenMiddleware]
-)
+schema = Schema(query=Query, mutation=Mutation, extensions=[AsyncJSONWebTokenMiddleware])
+sync_schema = Schema(query=Query, mutation=Mutation, extensions=[JSONWebTokenMiddleware])

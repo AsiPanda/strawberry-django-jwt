@@ -1,23 +1,24 @@
-import json
 from importlib import reload
+import json
+from unittest import mock
 
-import mock
-import strawberry.django
 from django.contrib.auth import get_user_model
 from django_mock_queries.query import MockModel, MockSet  # type: ignore
+import strawberry.django
 from strawberry.django import auto, mutations
 from strawberry.types import Info
 
-import strawberry_django_jwt.mutations
 from strawberry_django_jwt.decorators import (
     dispose_extra_kwargs,
     login_field,
     login_required,
 )
 from strawberry_django_jwt.mixins import JSONWebTokenMixin
+import strawberry_django_jwt.mutations
 from strawberry_django_jwt.settings import jwt_settings
 from strawberry_django_jwt.shortcuts import get_token
 from tests.testcases import AsyncSchemaTestCase
+
 from . import mixins
 from .decorators import OverrideJwtSettings
 from .models import MyTestModel
@@ -147,7 +148,7 @@ class CookieTokenAuthTests(mixins.CookieTokenAuthMixin, CookieTestCase):
         token_auth = strawberry_django_jwt.mutations.ObtainJSONWebToken.obtain
 
     def test_token_auth(self):
-        return super(CookieTokenAuthTests, self).test_token_auth()
+        return super().test_token_auth()
 
     def test_extended_field(self):
         @strawberry.type
@@ -192,9 +193,7 @@ class DeleteCookieTests(mixins.DeleteCookieMixin, CookieTestCase):
 
     @strawberry.type
     class Mutation:
-        delete_cookie = (
-            strawberry_django_jwt.mutations.DeleteJSONWebTokenCookie.delete_cookie
-        )
+        delete_cookie = strawberry_django_jwt.mutations.DeleteJSONWebTokenCookie.delete_cookie
 
 
 class LoginLogoutTest(SchemaTestCase):

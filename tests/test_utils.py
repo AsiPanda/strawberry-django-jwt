@@ -1,14 +1,14 @@
-import importlib
 from datetime import timedelta
 from functools import wraps
+import importlib
 from types import ModuleType
 from unittest import mock
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import rsa
 
-import strawberry_django_jwt.object_types
 from strawberry_django_jwt import exceptions, utils
+import strawberry_django_jwt.object_types
 from strawberry_django_jwt.object_types import TokenPayloadType
 from strawberry_django_jwt.settings import jwt_settings
 from tests.decorators import OverrideJwtSettings
@@ -139,9 +139,7 @@ class GetCredentialsTests(TestCase):
 
 
 class GetPayloadTests(TestCase):
-    @OverrideJwtSettings(
-        JWT_VERIFY_EXPIRATION=True, JWT_EXPIRATION_DELTA=timedelta(seconds=-1)
-    )
+    @OverrideJwtSettings(JWT_VERIFY_EXPIRATION=True, JWT_EXPIRATION_DELTA=timedelta(seconds=-1))
     def test_expired_signature(self):
         payload = utils.jwt_payload(self.user)
         token = utils.jwt_encode(payload)
@@ -153,9 +151,10 @@ class GetPayloadTests(TestCase):
         payload = utils.jwt_payload(self.user)
         token = utils.jwt_encode(payload)
 
-        with OverrideJwtSettings(JWT_AUDIENCE="test"):
-            with self.assertRaises(exceptions.JSONWebTokenError):
-                utils.get_payload(token)
+        with OverrideJwtSettings(JWT_AUDIENCE="test"), self.assertRaises(
+            exceptions.JSONWebTokenError
+        ):
+            utils.get_payload(token)
 
     def test_decode_error(self):
         with self.assertRaises(exceptions.JSONWebTokenError):
@@ -203,6 +202,5 @@ class GetUserByPayloadTestsAsync(AsyncTestCase):
             "django.contrib.auth.models.User.is_active",
             new_callable=mock.PropertyMock,
             return_value=False,
-        ):
-            with self.assertRaises(exceptions.JSONWebTokenError):
-                await utils.get_user_by_payload_async(payload)
+        ), self.assertRaises(exceptions.JSONWebTokenError):
+            await utils.get_user_by_payload_async(payload)

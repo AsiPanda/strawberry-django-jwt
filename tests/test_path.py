@@ -1,6 +1,6 @@
 from django.test import TestCase
-from strawberry_django_jwt.path import filter_strings
-from strawberry_django_jwt.path import PathDict
+
+from strawberry_django_jwt.path import PathDict, filter_strings
 
 
 class FilterStringsTests(TestCase):

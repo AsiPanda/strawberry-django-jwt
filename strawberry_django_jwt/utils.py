@@ -1,16 +1,17 @@
 from __future__ import annotations
 
 from calendar import timegm
+import contextlib
 from datetime import datetime
 from inspect import isawaitable
-from typing import Any, Optional, TYPE_CHECKING, Type, Union, cast
+from typing import TYPE_CHECKING, Any, Optional, cast
 
-import jwt
 from asgiref.sync import sync_to_async
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest
 from django.utils.translation import gettext as _
 from graphql import GraphQLResolveInfo
+import jwt
 from packaging.version import parse as parse_ver
 from strawberry.annotation import StrawberryAnnotation  # type: ignore
 from strawberry.arguments import StrawberryArgument
@@ -21,15 +22,11 @@ from strawberry_django_jwt import exceptions, object_types
 from strawberry_django_jwt.settings import jwt_settings
 
 if TYPE_CHECKING:  # pragma: no cover
-    try:
+    with contextlib.suppress(ImportError):
         from rest_framework.request import Request
-    except ImportError:
-        pass  # Only used for type hinting when DRF is installed
 
 
-def create_strawberry_argument(
-    python_name: str, graphql_name: str, type_: Type[Any], **options
-):
+def create_strawberry_argument(python_name: str, graphql_name: str, type_: type[Any], **options):
     return StrawberryArgument(
         python_name,
         graphql_name,
@@ -37,10 +34,8 @@ def create_strawberry_argument(
     )
 
 
-def create_argument_type(type_: Type[Any], **options):
-    if options.get("is_optional"):
-        type_ = Optional[type_]  # type: ignore
-    return type_
+def create_argument_type(type_: type[Any], **options):
+    return Optional[type_] if options.get("is_optional") else type_
 
 
 def jwt_payload(user, _=None):
@@ -76,7 +71,7 @@ def jwt_encode(payload: object_types.TokenPayloadType, _=None) -> str:
     )
     _token = cast(str, token)
     if parse_ver(jwt.__version__) < parse_ver("2.0.0"):  # type: ignore
-        _token = cast(bytes, _token).decode("utf8")
+        return cast(bytes, _token).decode("utf8")
     return _token
 
 
@@ -137,14 +132,13 @@ def get_credentials(request, **kwargs):
 
 def get_payload(token, context=None):
     try:
-        payload = jwt_settings.JWT_DECODE_HANDLER(token, context)
+        return jwt_settings.JWT_DECODE_HANDLER(token, context)
     except jwt.ExpiredSignatureError:
         raise exceptions.JSONWebTokenExpired()
     except jwt.DecodeError:
         raise exceptions.JSONWebTokenError(_("Error decoding signature"))
     except jwt.InvalidTokenError:
         raise exceptions.JSONWebTokenError(_("Invalid token"))
-    return payload
 
 
 def get_user_by_natural_key(username):
@@ -223,7 +217,7 @@ def await_and_execute(obj, on_resolve):
 
 def maybe_thenable(obj, on_resolve):
     """
-    Execute a on_resolve function once the thenable is resolved,
+    Execute an on_resolve function once the thenable is resolved,
     returning the same type of object inputted.
     If the object is not thenable, it should return on_resolve(obj)
     """
@@ -234,12 +228,9 @@ def maybe_thenable(obj, on_resolve):
     return on_resolve(obj)
 
 
-def get_context(
-    info: Union[HttpRequest, Request, Info[Any, Any], GraphQLResolveInfo]
-) -> Any:
+def get_context(info: HttpRequest | Request | Info[Any, Any] | GraphQLResolveInfo) -> Any:
     if hasattr(info, "context"):
-        ctx = getattr(info, "context")
-        if isinstance(ctx, StrawberryDjangoContext):
-            return ctx.request
-        return ctx
+        if isinstance(info.context, StrawberryDjangoContext):
+            return info.context.request
+        return info.context
     return info

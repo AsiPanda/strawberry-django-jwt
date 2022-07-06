@@ -1,5 +1,5 @@
-import sys
 from pathlib import Path
+import sys
 from textwrap import dedent
 
 import nox
@@ -22,11 +22,13 @@ nox.options.reuse_existing_virtualenvs = True
 
 def activate_virtualenv_in_precommit_hooks(session_: Session) -> None:
     """Activate virtualenv in hooks installed by pre-commit.
+
     This function patches git hooks installed by pre-commit to activate the
     session's virtual environment. This allows pre-commit to locate hooks in
     that environment when invoked from git.
     Args:
         session_: The Session object.
+
     """
     if session_.bin is None:
         return
@@ -45,9 +47,7 @@ def activate_virtualenv_in_precommit_hooks(session_: Session) -> None:
 
         text = hook.read_text()
         bindir = repr(session_.bin)[1:-1]  # strip quotes
-        if not (
-            Path("A") == Path("a") and bindir.lower() in text.lower() or bindir in text
-        ):
+        if not (Path("A") == Path("a") and bindir.lower() in text.lower() or bindir in text):
             continue
 
         lines = text.splitlines()
@@ -74,16 +74,6 @@ def install(session_, package_, version):
         Session_install(session_, package, "-U")
     else:
         Session_install(session_, f"{package_}=={version}")
-
-
-# noinspection PyUnresolvedReferences,PyProtectedMember
-def export_requirements_without_extras(session_: Session) -> Path:
-    """Ugly workaround to install only certain dev dependencies without extras"""
-    extras = session_.poetry.poetry.config._config.get("extras", {})  # type: ignore
-    session_.poetry.poetry.config._config["extras"] = {}  # type: ignore
-    requirements = session_.poetry.export_requirements()
-    session_.poetry.poetry.config._config["extras"] = extras  # type: ignore
-    return requirements
 
 
 @session(name="pre-commit", python="3.9")
@@ -114,7 +104,7 @@ def safety(session_: Session) -> None:
 def mypy(session_: Session) -> None:
     """Type-check using mypy."""
     args = session_.posargs or ["strawberry_django_jwt", "tests"]
-    requirements = export_requirements_without_extras(session_)
+    requirements = session_.poetry.export_requirements()
     session_.install("-r", str(requirements))
     session_.run("mypy", *args)
     if not session_.posargs:
@@ -128,7 +118,7 @@ def tests(session_: Session, django: str) -> None:
     if (session_.python, django) in invalid_sessions:
         session_.skip()
     session_.install(".")
-    requirements = export_requirements_without_extras(session_)
+    requirements = session_.poetry.export_requirements()
     session_.install("-r", str(requirements))
     install(session_, "django", django)
 
@@ -143,7 +133,7 @@ def tests(session_: Session, django: str) -> None:
 @nox.parametrize("pyjwt", pyjwt_versions)
 def tests_pyjwt(session_: Session, pyjwt: str) -> None:
     session_.install(".")
-    requirements = export_requirements_without_extras(session_)
+    requirements = session_.poetry.export_requirements()
     session_.install("-r", str(requirements))
     install(session_, "pyjwt", pyjwt)
 
@@ -158,7 +148,7 @@ def tests_pyjwt(session_: Session, pyjwt: str) -> None:
 @nox.parametrize("strawberry", strawberry_graphql_versions)
 def tests_strawberry_graphql(session_: Session, strawberry: str) -> None:
     session_.install(".")
-    requirements = export_requirements_without_extras(session_)
+    requirements = session_.poetry.export_requirements()
     session_.install("-r", str(requirements))
     install(session_, "strawberry-graphql", strawberry)
     if strawberry == "0.69.0":

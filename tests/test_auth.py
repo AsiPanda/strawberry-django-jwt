@@ -1,8 +1,9 @@
+from unittest.mock import patch
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
 from django.test import RequestFactory
-from mock import patch
 
 from strawberry_django_jwt.auth import authenticate
 from strawberry_django_jwt.backends import JSONWebTokenBackend

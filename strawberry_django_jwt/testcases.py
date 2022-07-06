@@ -1,8 +1,9 @@
-import strawberry
 from django.contrib.auth.models import AnonymousUser
 from django.core.handlers.asgi import ASGIRequest
 from django.core.handlers.wsgi import WSGIRequest
-from django.test import AsyncClient, AsyncRequestFactory, Client, RequestFactory, testcases  # type: ignore
+from django.test import AsyncClient, Client, RequestFactory, testcases
+from django.test import AsyncRequestFactory  # type: ignore
+import strawberry
 
 from strawberry_django_jwt.middleware import (
     AsyncJSONWebTokenMiddleware,
@@ -24,7 +25,7 @@ class SchemaRequestFactory(RequestFactory):
         self._middleware = middleware
 
     def _setup_middleware(self):
-        self._schema.extensions = [m for m in self._middleware]
+        self._schema.extensions = list(self._middleware)
 
     def execute(self, query, **options):
         self._setup_middleware()
@@ -81,7 +82,7 @@ class AsyncSchemaRequestFactory(AsyncRequestFactory):
         self._middleware = middleware
 
     def _setup_middleware(self):
-        self._schema.extensions = [m for m in self._middleware]
+        self._schema.extensions = list(self._middleware)
 
     def execute(self, query, **options):
         self._setup_middleware()
@@ -98,9 +99,7 @@ class AsyncJSONWebTokenClient(AsyncSchemaRequestFactory, AsyncClient):
             if header[0] == b"content-length":
                 del request["headers"][idx]
         body_file = request.pop("_body_file")
-        request["headers"].append(
-            (b"content-length", bytes(f"{len(body_file)}", "latin1"))
-        )
+        request["headers"].append((b"content-length", bytes(f"{len(body_file)}", "latin1")))
         request = ASGIRequest(self._base_environ(**request), body_file)
         request.user = AnonymousUser()
         return request
@@ -127,9 +126,7 @@ class AsyncJSONWebTokenClient(AsyncSchemaRequestFactory, AsyncClient):
         )
 
     def logout(self):
-        self._credentials.pop(
-            jwt_settings.JWT_AUTH_HEADER_NAME.replace("HTTP_", ""), None
-        )
+        self._credentials.pop(jwt_settings.JWT_AUTH_HEADER_NAME.replace("HTTP_", ""), None)
 
 
 class AsyncJSONWebTokenTestCase(testcases.TransactionTestCase):

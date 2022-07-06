@@ -54,7 +54,7 @@ class LoginTestCase(IntegrationTestCase):
         self.assertEqual(result["data"]["value"], 1)
 
     async def test_login_asgi_request(self):
-        """Test sync GraphQL View with an ASGIRequest"""
+        """Test sync GraphQL View with an ASGIRequest."""
         data = {
             "query": self.login_query,
             "variables": {
@@ -71,10 +71,10 @@ class LoginTestCase(IntegrationTestCase):
         self.assertIsInstance(result["data"]["tokenAuth"]["token"], str)
 
     async def test_read_asgi_request(self):
-        """
-        Test sync GraphQL View with an ASGIRequest
+        """Test sync GraphQL View with an ASGIRequest.
 
         Tests https://github.com/KundaPanda/strawberry-django-jwt/issues/194
+
         """
         data = {"query": self.read_query}
         response = await self.async_client.post(
