@@ -53,8 +53,6 @@ jobs:
       - name: Install dependencies
         run: |
           poetry run pip install "Django~=${{ matrix.django-version }}"
-      - name: Check for mypy errors
-        run: poetry run mypy .
 
       - name: Run tests
         run: poetry run pytest --cov-report=xml
