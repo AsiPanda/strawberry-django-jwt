@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AnonymousUser
 from django.core.handlers.asgi import ASGIRequest
 from django.core.handlers.wsgi import WSGIRequest
-from django.test import AsyncClient, Client, RequestFactory, testcases
+from django.test import AsyncClient, Client, RequestFactory, testcases  # type: ignore
 from django.test import AsyncRequestFactory  # type: ignore
 import strawberry
 

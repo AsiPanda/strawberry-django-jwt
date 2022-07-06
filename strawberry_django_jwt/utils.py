@@ -229,8 +229,8 @@ def maybe_thenable(obj, on_resolve):
 
 
 def get_context(info: HttpRequest | Request | Info[Any, Any] | GraphQLResolveInfo) -> Any:
-    if hasattr(info, "context"):
-        if isinstance(info.context, StrawberryDjangoContext):
-            return info.context.request
-        return info.context
+    if context := getattr(info, "context", False):
+        if isinstance(context, StrawberryDjangoContext):
+            return context.request
+        return context
     return info
