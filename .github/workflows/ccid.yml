@@ -49,13 +49,10 @@ jobs:
           path: .venv
           key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
-      - name: Install dependencies
-        run: poetry run pip install "Django~=${{ matrix.django-version }}"
-
-
       - name: Run tests
         run: |
           poetry install
+          poetry run pip install "Django~=${{ matrix.django-version }}"
           poetry run pytest --cov app
 
       - name: Run mypy
