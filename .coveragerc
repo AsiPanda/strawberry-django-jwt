@@ -1,5 +1,5 @@
 [run]
-source = strawberry_django_plus
+source = strawberry_django_jwt
 omit = .venv/**,tests/migrations/**,manage.py
 
 [report]
