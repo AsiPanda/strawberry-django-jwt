@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gqlauth-jwt"
-version = "0.2.0"
+version = "0.2.1"
 description = "Strawberry-graphql port of the graphene-django-jwt package"
 license = "MIT"
 authors = ["Vojtěch Dohnal <vojdoh@gmail.com>"]
