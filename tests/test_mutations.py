@@ -8,7 +8,7 @@ import strawberry
 from strawberry import auto
 from strawberry.django import mutations
 from strawberry.types import Info
-from strawberry_django_plus import gql
+from strawberry_django_plus import gql  # type: ignore
 
 from strawberry_django_jwt.decorators import (
     dispose_extra_kwargs,

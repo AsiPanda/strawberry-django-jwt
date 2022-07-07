@@ -3,6 +3,7 @@ import inspect
 from django.contrib.auth import get_user_model
 import strawberry
 from strawberry.field import StrawberryField
+from strawberry.types import Info
 
 from . import mixins
 from .decorators import dispose_extra_kwargs, ensure_token, token_auth
@@ -45,14 +46,14 @@ class ObtainJSONWebToken(JSONWebTokenMutation):
     @strawberry.mutation
     @token_auth
     @dispose_extra_kwargs
-    def obtain(self, info) -> TokenDataType:
+    def obtain(self, info: Info) -> TokenDataType:
         return TokenDataType(payload=TokenPayloadType())
 
 
 class Verify:
     @strawberry.mutation
     @ensure_token
-    def verify(self, info, token: str) -> PayloadType:
+    def verify(self, info: Info, token: str) -> PayloadType:
         return PayloadType(payload=get_payload(token, info.context))
 
 
@@ -62,7 +63,7 @@ class Refresh(mixins.RefreshMixin):
 
 class DeleteJSONWebTokenCookie:
     @strawberry.mutation
-    def delete_cookie(self, info) -> DeleteType:
+    def delete_cookie(self, info: Info) -> DeleteType:
         ctx = get_context(info)
         ctx.delete_jwt_cookie = jwt_settings.JWT_COOKIE_NAME in ctx.COOKIES and ctx.jwt_cookie
 

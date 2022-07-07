@@ -27,7 +27,7 @@ class QueriesTests(SchemaTestCase):
     class Query(JSONWebTokenMixin):
         @strawberry.field
         @dispose_extra_kwargs
-        def test(self, info) -> UserType:
+        def test(self, info: Info) -> UserType:
             return UserType(**info.context.user.__dict__)
 
     def setUp(self):
@@ -286,7 +286,7 @@ class AsyncQueriesTests(AsyncSchemaTestCase):
     class Query(JSONWebTokenMixin):
         @strawberry.field
         @dispose_extra_kwargs
-        async def test(self, info) -> UserType:
+        async def test(self, info: Info) -> UserType:
             return UserType(**info.context.user.__dict__)
 
     def setUp(self):

@@ -23,7 +23,7 @@ class AbstractRefreshToken(models.Model):
     created = models.DateTimeField(_("created"), auto_now_add=True)
     revoked = models.DateTimeField(_("revoked"), null=True, blank=True)
 
-    objects = managers.RefreshTokenQuerySet.as_manager()
+    objects = managers.RefreshTokenQuerySet.as_manager()  # type: ignore
 
     class Meta:
         abstract = True
@@ -70,7 +70,7 @@ class AbstractRefreshToken(models.Model):
         self.save(update_fields=["token", "created"])
 
 
-class RefreshToken(AbstractRefreshToken):
+class RefreshToken(AbstractRefreshToken):  # type: ignore
     """
     RefreshToken default model.
     """

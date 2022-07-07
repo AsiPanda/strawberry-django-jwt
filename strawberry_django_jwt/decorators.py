@@ -51,7 +51,7 @@ def with_info(target):
         signature_add_fn.__signature__ = inspect.Signature(
             [
                 *target_inspection.parameters.values(),
-                inspect.Parameter("info", inspect.Parameter.POSITIONAL_OR_KEYWORD),
+                inspect.Parameter("info", inspect.Parameter.POSITIONAL_OR_KEYWORD, annotation=Info),
             ],
             return_annotation=target_inspection.return_annotation,
         )

@@ -4,6 +4,7 @@ from typing import Any, Dict, Optional
 from django.utils.translation import gettext as _
 import strawberry
 from strawberry.field import StrawberryField
+from strawberry.types import Info
 from strawberry_django.fields.field import StrawberryDjangoField
 
 from . import exceptions, settings
@@ -85,7 +86,7 @@ class KeepAliveRefreshMixin(JSONWebTokenMixin):
     @setup_jwt_cookie
     @csrf_rotation
     @ensure_token
-    def refresh(self, info, token: Optional[str]) -> TokenDataType:
+    def refresh(self, info: Info, token: Optional[str]) -> TokenDataType:
         def on_resolve(values):
             payload, token = values
             payload.token = token
@@ -121,7 +122,7 @@ class RefreshTokenMixin(JSONWebTokenMixin):
     @csrf_rotation
     @refresh_expiration
     @ensure_refresh_token
-    def refresh(self, info, refresh_token: Optional[str]) -> RefreshedTokenType:
+    def refresh(self, info: Info, refresh_token: Optional[str]) -> RefreshedTokenType:
         context = get_context(info)
         old_refresh_token = get_refresh_token(refresh_token, context)
 

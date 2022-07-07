@@ -58,6 +58,9 @@ jobs:
           poetry install
           poetry run pytest --cov app
 
+      - name: Run mypy
+        run: poetry run mypy strawberry_django_jwt
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
 
