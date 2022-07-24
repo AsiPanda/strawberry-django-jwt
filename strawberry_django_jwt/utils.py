@@ -247,10 +247,8 @@ async def create_user_token(user: User) -> object_types.TokenDataType:
     token = jwt_settings.JWT_PAYLOAD_HANDLER(user)
     token_object = object_types.TokenDataType(payload=token, token=jwt_settings.JWT_ENCODE_HANDLER(token))
     if jwt_settings.JWT_LONG_RUNNING_REFRESH_TOKEN:
-        token_object.refresh_token = (
-            (await sync_to_async(create_refresh_token)(user)).get_token()  # type: ignore
-            if asyncio.get_event_loop().is_running()
-            else create_refresh_token(user).get_token()
+        token_object.refresh_token = (  # type: ignore
+            (await sync_to_async(create_refresh_token)(user)).get_token() if asyncio.get_event_loop().is_running() else create_refresh_token(user).get_token()
         )
 
     signals.token_issued.send(sender=create_user_token, request=None, user=user)
