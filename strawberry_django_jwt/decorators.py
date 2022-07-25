@@ -204,11 +204,8 @@ def refresh_expiration(f):
     @wraps(f)
     def wrapper(cls, *args, **kwargs):
         def on_resolve(payload):
-            payload.refresh_expires_in = (
-                timegm(datetime.utcnow().utctimetuple()) + jwt_settings.JWT_REFRESH_EXPIRATION_DELTA.total_seconds()
-                if jwt_settings.JWT_LONG_RUNNING_REFRESH_TOKEN
-                else None
-            )
+            if jwt_settings.JWT_ALLOW_REFRESH:
+                payload.refresh_expires_in = timegm(datetime.utcnow().utctimetuple()) + jwt_settings.JWT_REFRESH_EXPIRATION_DELTA.total_seconds()
             return payload
 
         result = f(cls, *args, **kwargs)

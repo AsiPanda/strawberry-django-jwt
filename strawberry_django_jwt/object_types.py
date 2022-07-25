@@ -43,12 +43,8 @@ class PayloadType:
 
 
 @strawberry.type
-@inject_fields(
-    {
-        **({"refresh_token": (str, "")} if jwt_settings.JWT_ALLOW_REFRESH else {}),
-    }
-)
 class TokenDataType:
     payload: TokenPayloadType
     token: str = ""
-    refresh_expires_in: Optional[int] = 0
+    refresh_token: Optional[str] = None
+    refresh_expires_in: Optional[int] = None

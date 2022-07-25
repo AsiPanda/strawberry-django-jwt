@@ -1,5 +1,6 @@
 from datetime import timedelta
 from functools import wraps
+from imp import reload
 import importlib
 from types import ModuleType
 from unittest import mock
@@ -206,8 +207,19 @@ class GetUserByPayloadTestsAsync(AsyncTestCase):
 
 
 class CreateUserTokenTestsAsync(AsyncTestCase):
-    @OverrideJwtSettings(JWT_LONG_RUNNING_REFRESH_TOKEN=True)
+    @OverrideJwtSettings(JWT_LONG_RUNNING_REFRESH_TOKEN=False)
     async def test_create_user_token_async(self):
+        reload(utils)
         token = await utils.create_user_token(self.user)
         user = await get_user_by_token_async(token.token)
         assert user == self.user
+        assert token.refresh_token is None
+        assert token.refresh_expires_in - jwt_settings.JWT_EXPIRATION_DELTA.total_seconds() < 5
+
+    @OverrideJwtSettings(JWT_LONG_RUNNING_REFRESH_TOKEN=True)
+    async def test_create_user_token_with_refresh_async(self):
+        token = await utils.create_user_token(self.user)
+        user = await get_user_by_token_async(token.token)
+        assert user == self.user
+        assert token.refresh_token is not None
+        assert token.refresh_expires_in - jwt_settings.JWT_REFRESH_EXPIRATION_DELTA.total_seconds() < 5

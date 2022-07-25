@@ -3,6 +3,7 @@ from django.utils.functional import lazy
 from django.utils.translation import gettext as _
 
 from strawberry_django_jwt.exceptions import JSONWebTokenError
+from strawberry_django_jwt.refresh_token.models import AbstractRefreshToken
 from strawberry_django_jwt.refresh_token.utils import get_refresh_token_model
 from strawberry_django_jwt.settings import jwt_settings
 
@@ -21,7 +22,7 @@ def get_refresh_token(token, context=None):
         raise JSONWebTokenError(_("Invalid refresh token"))
 
 
-def create_refresh_token(user, refresh_token=None):
+def create_refresh_token(user, refresh_token=None) -> AbstractRefreshToken:
     if refresh_token is not None and jwt_settings.JWT_REUSE_REFRESH_TOKENS:
         refresh_token.reuse()
         return refresh_token
