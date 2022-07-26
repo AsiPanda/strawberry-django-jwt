@@ -108,6 +108,55 @@ class RefreshMixin:
         self.assertIsNotNone(response.errors)
 
 
+class AsyncRefreshMixin:
+    async def test_refresh(self):
+        with catch_signal(token_refreshed) as token_refreshed_handler, back_to_the_future(seconds=1):
+
+            response = await self.execute(
+                {
+                    "token": self.token,
+                }
+            )
+
+        data = response.data["refreshToken"]
+        token = data["token"]
+        payload = data["payload"]
+
+        self.assertEqual(token_refreshed_handler.call_count, 1)
+
+        self.assertIsNone(response.errors)
+        self.assertNotEqual(token, self.token)
+        self.assertUsernameIn(data["payload"])
+        self.assertEqual(payload["origIat"], self.payload.origIat)
+        self.assertGreater(payload["exp"], self.payload.exp)
+
+    async def test_missing_token(self):
+        response = await self.execute({})
+        self.assertIsNotNone(response.errors)
+
+    async def test_refresh_expired(self):
+        with refresh_expired():
+            response = await self.execute(
+                {
+                    "token": self.token,
+                }
+            )
+
+        self.assertIsNotNone(response.errors)
+
+    @OverrideJwtSettings(JWT_ALLOW_REFRESH=False)
+    async def test_refresh_error(self):
+        reload(strawberry_django_jwt.mutations)
+        token = get_token(self.user, origIat=None)
+        response = await self.execute(
+            {
+                "token": token,
+            }
+        )
+
+        self.assertIsNotNone(response.errors)
+
+
 class CookieTokenAuthMixin:
     def test_token_auth(self):
         response = self.execute(

@@ -130,6 +130,80 @@ class RefreshTests(mixins.RefreshMixin, SchemaTestCase):
         )
 
 
+class RefreshAsyncTests(mixins.AsyncRefreshMixin, AsyncSchemaTestCase):
+    query = """
+    mutation RefreshToken($token: String) {
+      refreshToken(token: $token) {
+        token
+        payload {
+            username
+            origIat
+            exp
+        }
+        refreshExpiresIn
+      }
+    }"""
+
+    @strawberry.type
+    class Mutation:
+        refresh_token = strawberry_django_jwt.mutations.RefreshAsync.refresh
+
+    @OverrideJwtSettings(JWT_HIDE_TOKEN_FIELDS=True)
+    async def test_hidden_token_fields(self):
+        reload(strawberry_django_jwt.mixins)
+        reload(strawberry_django_jwt.mutations)
+
+        @strawberry.type
+        class Mutation(JSONWebTokenMixin):
+            @strawberry.field
+            @dispose_extra_kwargs
+            def test(self) -> str:
+                return str(self)
+
+        self.client.schema(query=self.Query, mutation=Mutation)
+
+        query = """
+        mutation RefreshToken($token: String) {
+          test(token: $token)
+        }"""
+
+        token = get_token(self.user)
+        response = await self.client.execute(query, {"token": token})
+
+        self.assertEqual(len(response.errors), 1)
+        self.assertEqual(
+            response.errors[0].message,
+            "Unknown argument 'token' on field 'Mutation.test'.",
+        )
+
+    @OverrideJwtSettings(JWT_HIDE_TOKEN_FIELDS=False)
+    async def test_visible_token_fields(self):
+        reload(strawberry_django_jwt.mixins)
+        reload(strawberry_django_jwt.mutations)
+
+        @strawberry.type
+        class Mutation(JSONWebTokenMixin):
+            @strawberry.field
+            @dispose_extra_kwargs
+            def test(self) -> str:
+                return str(self)
+
+        self.client.schema(query=self.Query, mutation=Mutation)
+
+        query = """
+        mutation RefreshToken($token: String) {
+          test(token: $token)
+        }"""
+
+        token = get_token(self.user)
+        response = await self.client.execute(query, {"token": token})
+
+        self.assertEqual(
+            response.data.get("test").replace('"', "'"),
+            json.dumps({"token": token}).replace('"', "'"),
+        )
+
+
 class CookieTokenAuthTests(mixins.CookieTokenAuthMixin, CookieTestCase):
     query = f"""
     mutation TokenAuth($username: String!, $password: String!) {{
