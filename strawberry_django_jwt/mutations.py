@@ -67,8 +67,6 @@ class ObtainJSONWebToken(JSONWebTokenMutation):
 class ObtainJSONWebTokenAsync(ObtainJSONWebToken):
     """No need for async impl, decorators handle it."""
 
-    pass
-
 
 class Verify:
     @strawberry.mutation
@@ -79,8 +77,6 @@ class Verify:
 
 class VerifyAsync(Verify):
     """No need for async impl, decorators handle it."""
-
-    pass
 
 
 class Refresh(mixins.RefreshMixin):
@@ -101,5 +97,3 @@ class DeleteJSONWebTokenCookie:
 
 class DeleteJSONWebTokenCookieAsync(DeleteJSONWebTokenCookie):
     """No need for async impl, only for consistency."""
-
-    pass
