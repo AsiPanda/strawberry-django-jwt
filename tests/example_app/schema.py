@@ -39,5 +39,13 @@ class Mutation:
     delete_cookie = jwt_mutations.DeleteJSONWebTokenCookie.delete_cookie
 
 
-schema = Schema(query=Query, mutation=Mutation, extensions=[AsyncJSONWebTokenMiddleware])
+@strawberry.type
+class MutationAsync:
+    token_auth = jwt_mutations.ObtainJSONWebTokenAsync.obtain
+    verify_token = jwt_mutations.VerifyAsync.verify
+    refresh_token = jwt_mutations.RefreshAsync.refresh
+    delete_cookie = jwt_mutations.DeleteJSONWebTokenCookieAsync.delete_cookie
+
+
+schema = Schema(query=Query, mutation=MutationAsync, extensions=[AsyncJSONWebTokenMiddleware])
 sync_schema = Schema(query=Query, mutation=Mutation, extensions=[JSONWebTokenMiddleware])

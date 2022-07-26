@@ -87,19 +87,37 @@ substitutes [Graphene](https://graphene-python.org/) GraphQL backend for [Strawb
 
 6. Add _strawberry-django-jwt_ mutations to the root schema:
 
-   ```python
-   import strawberry
-   import strawberry_django_jwt.mutations as jwt_mutations
+- for sync:
 
-   @strawberry.type
-   class Mutation:
-       token_auth = jwt_mutations.ObtainJSONWebToken.obtain
-       verify_token = jwt_mutations.Verify.verify
-       refresh_token = jwt_mutations.Refresh.refresh
-       delete_token_cookie = jwt_mutations.DeleteJSONWebTokenCookie.delete_cookie
-   ```
+```python
+import strawberry
+import strawberry_django_jwt.mutations as jwt_mutations
 
-   schema = strawberry.Schema(mutation=Mutation, query=...)
+@strawberry.type
+class Mutation:
+    token_auth = jwt_mutations.ObtainJSONWebToken.obtain
+    verify_token = jwt_mutations.Verify.verify
+    refresh_token = jwt_mutations.Refresh.refresh
+    delete_token_cookie = jwt_mutations.DeleteJSONWebTokenCookie.delete_cookie
+
+schema = strawberry.Schema(mutation=Mutation, query=...)
+```
+
+- for async:
+
+```python
+import strawberry
+import strawberry_django_jwt.mutations as jwt_mutations
+
+@strawberry.type
+class Mutation:
+    token_auth = jwt_mutations.ObtainJSONWebTokenAsync.obtain
+    verify_token = jwt_mutations.VerifyAsync.verify
+    refresh_token = jwt_mutations.RefreshAsync.refresh
+    delete_token_cookie = jwt_mutations.DeleteJSONWebTokenCookieAsync.delete_cookie
+
+schema = strawberry.Schema(mutation=Mutation, query=...)
+```
 
 7. \[OPTIONAL\] Set up the custom Strawberry views
 

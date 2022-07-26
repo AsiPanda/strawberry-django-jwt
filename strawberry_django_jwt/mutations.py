@@ -64,6 +64,12 @@ class ObtainJSONWebToken(JSONWebTokenMutation):
         return TokenDataType(payload=TokenPayloadType())
 
 
+class ObtainJSONWebTokenAsync(ObtainJSONWebToken):
+    """No need for async impl, decorators handle it."""
+
+    pass
+
+
 class Verify:
     @strawberry.mutation
     @ensure_token
@@ -71,7 +77,17 @@ class Verify:
         return PayloadType(payload=get_payload(token, info.context))
 
 
+class VerifyAsync(Verify):
+    """No need for async impl, decorators handle it."""
+
+    pass
+
+
 class Refresh(mixins.RefreshMixin):
+    pass
+
+
+class RefreshAsync(mixins.AsyncRefreshMixin):
     pass
 
 
@@ -81,3 +97,9 @@ class DeleteJSONWebTokenCookie:
         ctx = get_context(info)
         ctx.delete_jwt_cookie = jwt_settings.JWT_COOKIE_NAME in ctx.COOKIES and getattr(ctx, "jwt_cookie", False)
         return DeleteType(deleted=ctx.delete_jwt_cookie)
+
+
+class DeleteJSONWebTokenCookieAsync(DeleteJSONWebTokenCookie):
+    """No need for async impl, only for consistency."""
+
+    pass

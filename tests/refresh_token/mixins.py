@@ -88,6 +88,18 @@ class RefreshTokenMixin:
 class RefreshMixin(RefreshTokenMutationMixin, RefreshTokenMixin):
     @OverrideJwtSettings(JWT_LONG_RUNNING_REFRESH_TOKEN=True)
     def test_refresh_token(self):
+        reload(strawberry_django_jwt.mixins)
+        reload(strawberry_django_jwt.mutations)
+        self.refresh_token_mutations = {
+            "refresh_token": strawberry_django_jwt.mutations.Refresh.refresh,
+        }
+        m = type(
+            "jwt",
+            (object,),
+            {**{name: mutation for name, mutation in self.refresh_token_mutations.items()}},
+        )
+        self.Mutation = strawberry.type(m)
+        self.client.schema(query=self.Query, mutation=self.Mutation)
         with catch_signal(refresh_token_rotated) as refresh_token_rotated_handler, back_to_the_future(seconds=1):
             response = self.execute(
                 {
@@ -113,6 +125,18 @@ class RefreshMixin(RefreshTokenMutationMixin, RefreshTokenMixin):
 
     @OverrideJwtSettings(JWT_LONG_RUNNING_REFRESH_TOKEN=True, JWT_REUSE_REFRESH_TOKENS=True)
     def test_reuse_refresh_token(self):
+        reload(strawberry_django_jwt.mixins)
+        reload(strawberry_django_jwt.mutations)
+        self.refresh_token_mutations = {
+            "refresh_token": strawberry_django_jwt.mutations.Refresh.refresh,
+        }
+        m = type(
+            "jwt",
+            (object,),
+            {**{name: mutation for name, mutation in self.refresh_token_mutations.items()}},
+        )
+        self.Mutation = strawberry.type(m)
+        self.client.schema(query=self.Query, mutation=self.Mutation)
         with catch_signal(refresh_token_rotated) as refresh_token_rotated_handler, back_to_the_future(seconds=1):
             response = self.execute(
                 {
@@ -215,6 +239,18 @@ class AsyncCookieTokenAuthMixin(RefreshTokenMutationMixin):
 class CookieRefreshMixin(RefreshTokenMutationMixin):
     @OverrideJwtSettings(JWT_LONG_RUNNING_REFRESH_TOKEN=True)
     def test_refresh_token(self):
+        reload(strawberry_django_jwt.mixins)
+        reload(strawberry_django_jwt.mutations)
+        self.refresh_token_mutations = {
+            "refresh_token": strawberry_django_jwt.mutations.Refresh.refresh,
+        }
+        m = type(
+            "jwt",
+            (object,),
+            {**{name: mutation for name, mutation in self.refresh_token_mutations.items()}},
+        )
+        self.Mutation = strawberry.type(m)
+        self.client.schema(query=self.Query, mutation=self.Mutation)
         self.set_refresh_token_cookie()
 
         with catch_signal(refresh_token_rotated) as refresh_token_rotated_handler, back_to_the_future(seconds=1):
