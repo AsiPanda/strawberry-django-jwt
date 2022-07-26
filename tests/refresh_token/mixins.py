@@ -158,13 +158,149 @@ class RefreshMixin(RefreshTokenMutationMixin, RefreshTokenMixin):
 
     @OverrideJwtSettings(JWT_LONG_RUNNING_REFRESH_TOKEN=True)
     def test_missing_refresh_token(self):
+        reload(strawberry_django_jwt.mixins)
+        reload(strawberry_django_jwt.mutations)
+        self.refresh_token_mutations = {
+            "refresh_token": strawberry_django_jwt.mutations.Refresh.refresh,
+        }
+        m = type(
+            "jwt",
+            (object,),
+            {**{name: mutation for name, mutation in self.refresh_token_mutations.items()}},
+        )
+        self.Mutation = strawberry.type(m)
+        self.client.schema(query=self.Query, mutation=self.Mutation)
         response = self.execute({})
         self.assertIsNotNone(response.errors)
 
     @OverrideJwtSettings(JWT_LONG_RUNNING_REFRESH_TOKEN=True)
     def test_refresh_token_expired(self):
+        reload(strawberry_django_jwt.mixins)
+        reload(strawberry_django_jwt.mutations)
+        self.refresh_token_mutations = {
+            "refresh_token": strawberry_django_jwt.mutations.Refresh.refresh,
+        }
+        m = type(
+            "jwt",
+            (object,),
+            {**{name: mutation for name, mutation in self.refresh_token_mutations.items()}},
+        )
+        self.Mutation = strawberry.type(m)
+        self.client.schema(query=self.Query, mutation=self.Mutation)
         with refresh_expired():
             response = self.execute(
+                {
+                    "refreshToken": self.refresh_token.token,
+                }
+            )
+
+        self.assertIsNotNone(response.errors)
+
+
+class AsyncRefreshMixin(RefreshTokenMixin):
+    @OverrideJwtSettings(JWT_LONG_RUNNING_REFRESH_TOKEN=True)
+    async def test_refresh_token(self):
+        reload(strawberry_django_jwt.mixins)
+        reload(strawberry_django_jwt.mutations)
+        self.refresh_token_mutations = {
+            "refresh_token": strawberry_django_jwt.mutations.RefreshAsync.refresh,
+        }
+        m = type(
+            "jwt",
+            (object,),
+            {**{name: mutation for name, mutation in self.refresh_token_mutations.items()}},
+        )
+        self.Mutation = strawberry.type(m)
+        self.client.schema(query=self.Query, mutation=self.Mutation)
+        with catch_signal(refresh_token_rotated) as refresh_token_rotated_handler, back_to_the_future(seconds=1):
+            response = await self.execute(
+                {
+                    "refreshToken": self.refresh_token.token,
+                }
+            )
+
+        data = response.data["refreshToken"]
+        token = data["token"]
+        refresh_token = await sync_to_async(get_refresh_token)(data["refreshToken"])
+        payload = data["payload"]
+
+        self.assertIsNone(response.errors)
+        self.assertEqual(refresh_token_rotated_handler.call_count, 1)
+
+        self.assertUsernameIn(payload)
+        self.assertNotEqual(token, self.token)
+        self.assertGreater(payload["exp"], self.payload.exp)
+
+        self.assertNotEqual(refresh_token.token, self.refresh_token.token)
+        self.assertEqual(refresh_token.user_id, self.user.id)
+        self.assertGreater(refresh_token.created, self.refresh_token.created)
+
+    @OverrideJwtSettings(JWT_LONG_RUNNING_REFRESH_TOKEN=True, JWT_REUSE_REFRESH_TOKENS=True)
+    async def test_reuse_refresh_token(self):
+        reload(strawberry_django_jwt.mixins)
+        reload(strawberry_django_jwt.mutations)
+        self.refresh_token_mutations = {
+            "refresh_token": strawberry_django_jwt.mutations.RefreshAsync.refresh,
+        }
+        m = type(
+            "jwt",
+            (object,),
+            {**{name: mutation for name, mutation in self.refresh_token_mutations.items()}},
+        )
+        self.Mutation = strawberry.type(m)
+        self.client.schema(query=self.Query, mutation=self.Mutation)
+        with catch_signal(refresh_token_rotated) as refresh_token_rotated_handler, back_to_the_future(seconds=1):
+            response = await self.execute(
+                {
+                    "refreshToken": self.refresh_token.token,
+                }
+            )
+
+        data = response.data["refreshToken"]
+        token = data["token"]
+        refresh_token = await sync_to_async(get_refresh_token)(data["refreshToken"])
+        payload = data["payload"]
+
+        self.assertIsNone(response.errors)
+        self.assertEqual(refresh_token_rotated_handler.call_count, 1)
+
+        self.assertUsernameIn(payload)
+        self.assertNotEqual(token, self.token)
+        self.assertNotEqual(refresh_token.token, self.refresh_token.token)
+
+    @OverrideJwtSettings(JWT_LONG_RUNNING_REFRESH_TOKEN=True)
+    async def test_missing_refresh_token(self):
+        reload(strawberry_django_jwt.mixins)
+        reload(strawberry_django_jwt.mutations)
+        self.refresh_token_mutations = {
+            "refresh_token": strawberry_django_jwt.mutations.RefreshAsync.refresh,
+        }
+        m = type(
+            "jwt",
+            (object,),
+            {**{name: mutation for name, mutation in self.refresh_token_mutations.items()}},
+        )
+        self.Mutation = strawberry.type(m)
+        self.client.schema(query=self.Query, mutation=self.Mutation)
+        response = await self.execute({})
+        self.assertIsNotNone(response.errors)
+
+    @OverrideJwtSettings(JWT_LONG_RUNNING_REFRESH_TOKEN=True)
+    async def test_refresh_token_expired(self):
+        reload(strawberry_django_jwt.mixins)
+        reload(strawberry_django_jwt.mutations)
+        self.refresh_token_mutations = {
+            "refresh_token": strawberry_django_jwt.mutations.RefreshAsync.refresh,
+        }
+        m = type(
+            "jwt",
+            (object,),
+            {**{name: mutation for name, mutation in self.refresh_token_mutations.items()}},
+        )
+        self.Mutation = strawberry.type(m)
+        self.client.schema(query=self.Query, mutation=self.Mutation)
+        with refresh_expired():
+            response = await self.execute(
                 {
                     "refreshToken": self.refresh_token.token,
                 }

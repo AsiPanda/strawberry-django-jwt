@@ -27,6 +27,7 @@ from strawberry_django_jwt.refresh_token.shortcuts import (
     create_refresh_token,
     get_refresh_token,
     refresh_token_lazy,
+    refresh_token_lazy_async,
 )
 from strawberry_django_jwt.signals import token_refreshed
 from strawberry_django_jwt.utils import (
@@ -119,7 +120,7 @@ class RefreshTokenMixin(JSONWebTokenMixin):
     @csrf_rotation
     @refresh_expiration
     @ensure_refresh_token
-    def _refresh(self, info: Info, refresh_token: Optional[str]) -> RefreshedTokenType:
+    def _refresh(self, info: Info, refresh_token: Optional[str], _is_async: Optional[bool] = False) -> RefreshedTokenType:
         context = get_context(info)
         old_refresh_token = get_refresh_token(refresh_token, context)
 
@@ -139,7 +140,7 @@ class RefreshTokenMixin(JSONWebTokenMixin):
             )
             new_refresh_token = context.jwt_refresh_token.get_token()
         else:
-            new_refresh_token = refresh_token_lazy(
+            new_refresh_token = (refresh_token_lazy_async if _is_async else refresh_token_lazy)(
                 old_refresh_token.user,
                 old_refresh_token,
             )
@@ -156,7 +157,7 @@ class RefreshTokenMixin(JSONWebTokenMixin):
         return RefreshTokenMixin._refresh(self, info=info, refresh_token=refresh_token)
 
     async def refresh_async(self, info: Info, refresh_token: Optional[str] = None) -> RefreshedTokenType:
-        return await sync_to_async(RefreshTokenMixin._refresh)(self, info=info, refresh_token=refresh_token)
+        return await sync_to_async(RefreshTokenMixin._refresh)(self, info=info, refresh_token=refresh_token, _is_async=True)
 
 
 base_class: Type[Union[RefreshTokenMixin, KeepAliveRefreshMixin]] = (

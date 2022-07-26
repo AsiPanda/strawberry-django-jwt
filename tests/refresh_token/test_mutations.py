@@ -44,6 +44,26 @@ class RefreshTests(mixins.RefreshMixin, SchemaTestCase):
     }
 
 
+class AsyncRefreshTests(mixins.AsyncRefreshMixin, AsyncSchemaTestCase):
+    query = """
+    mutation RefreshToken($refreshToken: String) {
+      refreshToken(refreshToken: $refreshToken) {
+        token
+        payload {
+            username
+            origIat
+            exp
+        }
+        refreshToken
+        refreshExpiresIn
+      }
+    }"""
+
+    refresh_token_mutations = {
+        "refresh_token": strawberry_django_jwt.mutations.RefreshAsync.refresh,
+    }
+
+
 class RevokeTests(mixins.RevokeMixin, SchemaTestCase):
     query = """
     mutation RevokeToken($refreshToken: String!) {
