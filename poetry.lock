@@ -1027,7 +1027,7 @@ dev = ["uvicorn"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "df657435280558d93ded915bac021411915683f2044e995b265d84243eb62673"
+content-hash = "57c34ec96cb3039a13b395051963924d133c5a3d65e39e5814f16a2daf3523a0"
 
 [metadata.files]
 anyio = [
