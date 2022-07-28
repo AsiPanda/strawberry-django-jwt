@@ -27,7 +27,7 @@ Django = [
     { version = ">=3.2,<5", markers = "python_version >= '3.8'", optional = true }
 ]
 PyJWT = ">=1.7.1,<3.0"
-strawberry-graphql = ">=0.109,<0.121"
+strawberry-graphql = ">=0.109,<0.122"
 strawberry-graphql-django = { version = ">=0.3", allow-prereleases = true }
 django-admin-display = "^1.3.0"
 packaging = ">=20.0,<30.0"
