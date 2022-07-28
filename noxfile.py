@@ -13,7 +13,7 @@ invalid_sessions = [
     ("3.10", "3.1"),
 ]
 pyjwt_versions = ["1.7.1", "latest"]
-strawberry_graphql_versions = ["0.120.0"]
+strawberry_graphql_versions = ["latest"]
 nox.needs_version = ">= 2021.6.6"
 nox.options.sessions = ("tests",)
 nox.options.reuse_existing_virtualenvs = True
