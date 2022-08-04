@@ -17,6 +17,7 @@ import jwt
 from packaging.version import parse as parse_ver
 from strawberry.annotation import StrawberryAnnotation  # type: ignore
 from strawberry.arguments import StrawberryArgument
+from strawberry.channels.context import StrawberryChannelsContext
 from strawberry.django.context import StrawberryDjangoContext
 from strawberry.types import Info
 
@@ -234,10 +235,10 @@ def maybe_thenable(obj, on_resolve):
     return on_resolve(obj)
 
 
-def get_context(info: HttpRequest | Request | Info[Any, Any] | GraphQLResolveInfo) -> Any:
+def get_context(info: HttpRequest | Request | Info[Any, Any] | GraphQLResolveInfo | StrawberryChannelsContext) -> Any:
     if hasattr(info, "context"):
         ctx = getattr(info, "context")  # noqa: B009
-        if isinstance(ctx, StrawberryDjangoContext):
+        if isinstance(ctx, (StrawberryDjangoContext, StrawberryChannelsContext)):
             return ctx.request
         return ctx
     return info
