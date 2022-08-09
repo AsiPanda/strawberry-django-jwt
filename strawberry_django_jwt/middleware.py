@@ -114,6 +114,7 @@ class JSONWebTokenMiddleware(BaseJSONWebTokenMiddleware):
 def channels_compat(context: StrawberryChannelsContext) -> None:
     request = context.request
     request.META = request.headers
+    context.user = AnonymousUser()
     if auth_header := request.headers.get("authorization"):
         request.META["HTTP_AUTHORIZATION"] = auth_header
     request.COOKIES = request.scope["session"]
