@@ -1,7 +1,9 @@
-from typing import List
+import asyncio
+from typing import AsyncGenerator, List
 
 import strawberry
 from strawberry import Schema
+from strawberry.types import Info
 
 from strawberry_django_jwt.decorators import login_required
 from strawberry_django_jwt.middleware import (
@@ -32,6 +34,16 @@ class Query:
 
 
 @strawberry.type
+class Subscription:
+    @strawberry.subscription
+    @login_required
+    async def count(self, info: Info, target: int = 5) -> AsyncGenerator[int, None]:
+        for i in range(target):
+            yield i
+            await asyncio.sleep(0.2)
+
+
+@strawberry.type
 class Mutation:
     token_auth = jwt_mutations.ObtainJSONWebToken.obtain
     verify_token = jwt_mutations.Verify.verify
@@ -47,5 +59,5 @@ class MutationAsync:
     delete_cookie = jwt_mutations.DeleteJSONWebTokenCookieAsync.delete_cookie
 
 
-schema = Schema(query=Query, mutation=MutationAsync, extensions=[AsyncJSONWebTokenMiddleware])
+schema = Schema(query=Query, mutation=MutationAsync, subscription=Subscription, extensions={AsyncJSONWebTokenMiddleware})
 sync_schema = Schema(query=Query, mutation=Mutation, extensions=[JSONWebTokenMiddleware])

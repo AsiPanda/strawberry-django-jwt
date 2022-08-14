@@ -52,6 +52,8 @@ djangorestframework = "^3.12.4"
 nox-poetry = "^1.0.1"
 nox = "^2022.1.7"
 mock = { version = "^4.0", python = "<3.8" }
+channels = "^3.0.5"
+gql = {extras = ["all"], version = "^3.4.0"}
 
 [tool.poetry.extras]
 dev = ["uvicorn"]

@@ -1,3 +1,9 @@
+from pathlib import Path
+import sys
+
+BASE_DIR = Path(__file__).parent.parent
+sys.path.append(str(BASE_DIR))
+
 DEBUG = True
 
 INSTALLED_APPS = [
@@ -6,14 +12,17 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "channels",
     "strawberry_django_jwt.refresh_token.apps.RefreshTokenConfig",
     "tests",
     "rest_framework",
 ]
 
-DATABASES = {
-    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"},
-}
+
+ASGI_APPLICATION = "example_app.asgi.application"
+
+# channels tests cannot run with in memory database.
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": str(BASE_DIR / "db.sqlite3"), "TEST": {"NAME": str(BASE_DIR / "db_test.sqlite3")}}}
 
 MIGRATION_MODULES = {"tests": "tests.migrations"}
 
