@@ -151,7 +151,7 @@ class RefreshTokenMixin(JSONWebTokenMixin):
             refresh_token=old_refresh_token,
             refresh_token_issued=new_refresh_token,
         )
-        return RefreshedTokenType(payload, token, new_refresh_token, refresh_expires_in=0)
+        return RefreshedTokenType(payload=payload, token=token, refresh_token=new_refresh_token, refresh_expires_in=0)
 
     def refresh(self, info: Info, refresh_token: Optional[str] = None) -> RefreshedTokenType:
         return RefreshTokenMixin._refresh(self, info=info, refresh_token=refresh_token)
