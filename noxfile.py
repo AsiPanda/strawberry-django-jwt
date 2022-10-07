@@ -7,9 +7,9 @@ from nox_poetry import Session, session
 
 package = "strawberry_django_jwt"
 python_versions = ["3.10", "3.9", "3.8", "3.7"]
-django_versions = ["4.0", "3.2"]
+django_versions = ["4.1", "3.2"]
 invalid_sessions = [
-    ("3.7", "4.0"),
+    ("3.7", "4.1"),
     ("3.10", "3.1"),
 ]
 pyjwt_versions = ["1.7.1", "latest"]
