@@ -1,7 +1,7 @@
 from datetime import timedelta
 from functools import wraps
-from imp import reload
 import importlib
+from importlib import reload
 from types import ModuleType
 from unittest import mock
 
