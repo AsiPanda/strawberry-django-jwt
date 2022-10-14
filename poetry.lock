@@ -56,7 +56,7 @@ python-versions = ">=3.5"
 dev = ["cloudpickle", "coverage[toml] (>=5.0.2)", "furo", "hypothesis", "mypy (>=0.900,!=0.940)", "pre-commit", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "sphinx", "sphinx-notfound-page", "zope.interface"]
 docs = ["furo", "sphinx", "sphinx-notfound-page", "zope.interface"]
 tests = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "zope.interface"]
-tests_no_zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins"]
+tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins"]
 
 [[package]]
 name = "backports.cached-property"
@@ -105,7 +105,7 @@ optional = false
 python-versions = ">=3.6.0"
 
 [package.extras]
-unicode_backport = ["unicodedata2"]
+unicode-backport = ["unicodedata2"]
 
 [[package]]
 name = "click"
@@ -506,7 +506,7 @@ typing-extensions = {version = ">=3.7.4", markers = "python_version < \"3.8\""}
 virtualenv = ">=14"
 
 [package.extras]
-tox_to_nox = ["jinja2", "tox"]
+tox-to-nox = ["jinja2", "tox"]
 
 [[package]]
 name = "nox-poetry"
@@ -705,7 +705,7 @@ urllib3 = ">=1.21.1,<1.27"
 
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
-use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
+use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "six"
@@ -733,7 +733,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "strawberry-graphql"
-version = "0.133.5"
+version = "0.133.6"
 description = "A library for creating GraphQL APIs"
 category = "main"
 optional = false
@@ -1522,8 +1522,8 @@ sqlparse = [
     {file = "sqlparse-0.4.3.tar.gz", hash = "sha256:69ca804846bb114d2ec380e4360a8a340db83f0ccf3afceeb1404df028f57268"},
 ]
 strawberry-graphql = [
-    {file = "strawberry-graphql-0.133.5.tar.gz", hash = "sha256:cd3677916c677b93fa30d4d204f148506e16c7346442da4f94690dcd8ec19fe7"},
-    {file = "strawberry_graphql-0.133.5-py3-none-any.whl", hash = "sha256:8ee3b60376111e769d96f49acd637a96689c750787ba810a27d63f361bf4ba09"},
+    {file = "strawberry_graphql-0.133.6-py3-none-any.whl", hash = "sha256:7aee08f42d8c6c6e584603b357d8c0b3436b682a748a408e92273cd9d872ee0e"},
+    {file = "strawberry_graphql-0.133.6.tar.gz", hash = "sha256:3d2a164eec043c2017660659a7ece85e0ad7f107342941db0183188c58de853b"},
 ]
 strawberry-graphql-django = [
     {file = "strawberry-graphql-django-0.5.3.tar.gz", hash = "sha256:00297ec673272a6c91d349fad2ce699a5d903f747b4d377dc09eea2a2a777a0f"},
