@@ -30,6 +30,7 @@ class DeleteType:
         **({"origIat": (int, 0)} if jwt_settings.JWT_ALLOW_REFRESH else {}),
         **({"aud": (str, "")} if jwt_settings.JWT_AUDIENCE else {}),
         **({"iss": (str, "")} if jwt_settings.JWT_ISSUER else {}),
+        **(jwt_settings.JWT_PAYLOAD_EXTRA_FIELDS if jwt_settings.JWT_PAYLOAD_EXTRA_FIELDS else {}),
     }
 )
 class TokenPayloadType:
