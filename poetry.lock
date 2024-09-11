@@ -56,7 +56,7 @@ python-versions = ">=3.5"
 dev = ["cloudpickle", "coverage[toml] (>=5.0.2)", "furo", "hypothesis", "mypy (>=0.900,!=0.940)", "pre-commit", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "sphinx", "sphinx-notfound-page", "zope.interface"]
 docs = ["furo", "sphinx", "sphinx-notfound-page", "zope.interface"]
 tests = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "zope.interface"]
-tests_no_zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins"]
+tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins"]
 
 [[package]]
 name = "backports.cached-property"
@@ -105,7 +105,7 @@ optional = false
 python-versions = ">=3.6.0"
 
 [package.extras]
-unicode_backport = ["unicodedata2"]
+unicode-backport = ["unicodedata2"]
 
 [[package]]
 name = "click"
@@ -506,7 +506,7 @@ typing-extensions = {version = ">=3.7.4", markers = "python_version < \"3.8\""}
 virtualenv = ">=14"
 
 [package.extras]
-tox_to_nox = ["jinja2", "tox"]
+tox-to-nox = ["jinja2", "tox"]
 
 [[package]]
 name = "nox-poetry"
@@ -705,7 +705,7 @@ urllib3 = ">=1.21.1,<1.27"
 
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
-use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
+use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "six"
@@ -761,7 +761,7 @@ sanic = ["sanic (>=20.12.2,<22.0.0)"]
 
 [[package]]
 name = "strawberry-graphql-django"
-version = "0.5.3"
+version = "0.7.1"
 description = "Strawberry GraphQL Django extension"
 category = "main"
 optional = false
@@ -1526,8 +1526,8 @@ strawberry-graphql = [
     {file = "strawberry_graphql-0.133.5-py3-none-any.whl", hash = "sha256:8ee3b60376111e769d96f49acd637a96689c750787ba810a27d63f361bf4ba09"},
 ]
 strawberry-graphql-django = [
-    {file = "strawberry-graphql-django-0.5.3.tar.gz", hash = "sha256:00297ec673272a6c91d349fad2ce699a5d903f747b4d377dc09eea2a2a777a0f"},
-    {file = "strawberry_graphql_django-0.5.3-py3-none-any.whl", hash = "sha256:36fa5df088b1857a5e944b5aea173729eb53c636f7ffbeb190bbdadb5fd200fe"},
+    {file = "strawberry_graphql_django-0.7.1-py3-none-any.whl", hash = "sha256:0affd3ddcf4e64c4297ebc38315a7eb13ec005f19c409912bbf29c582e22a4de"},
+    {file = "strawberry_graphql_django-0.7.1.tar.gz", hash = "sha256:a80621421d6fa997758f43e04945c41d56def4c63e77bf68908a11b5b4d590a4"},
 ]
 tomli = [
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
